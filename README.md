@@ -24,7 +24,7 @@ Everything lives in **`event.config.mjs`**: title, timezone, nights (date, times
 npm run dev     # builds to dist/ and serves http://localhost:8080
 ```
 
-No dependencies. Any Node 18+ works; 24 (current LTS) is pinned for Cloudflare and CI.
+No dependencies. Any Node 18+ works; 26 is pinned for Cloudflare and CI.
 
 ## Deploy
 

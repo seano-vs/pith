@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
-          node-version: 24
+          node-version: 26
       # Fails on a bad event.config.mjs (missing fields, duplicate ids, JS syntax errors).
       - run: node build.mjs
         env:
