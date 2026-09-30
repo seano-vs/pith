@@ -1,0 +1,23 @@
+name: Check build
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Fails on a bad event.config.mjs (missing fields, duplicate ids, JS syntax errors).
+      - run: node build.mjs
+        env:
+          SITE_URL: https://ci.invalid
+      - run: node --check dist/app.js
+      - name: Sanity-check calendar files
+        run: |
+          test -s dist/cal/all.ics
+          grep -q "BEGIN:VCALENDAR" dist/cal/all.ics
+          grep -q "%[A-Z_]*%" dist/index.html && { echo "Unfilled template token in index.html"; exit 1; } || true

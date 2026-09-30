@@ -29,8 +29,10 @@ No dependencies. Node 18+ is all you need.
 ## Deploy (GitHub Pages)
 
 1. Merge to `main`.
-2. In the repo, go to **Settings → Pages → Source: GitHub Actions**.
-3. Every push to `main` rebuilds and deploys. The workflow passes the real Pages URL
+2. Make `main` the default branch: **Settings → General → Default branch**. By default the
+   `github-pages` environment only accepts deploys from the default branch, so this step is required.
+3. In the repo, go to **Settings → Pages → Source: GitHub Actions**.
+4. Every push to `main` rebuilds and deploys. The workflow passes the real Pages URL
    in as `SITE_URL`, so preview cards and calendar subscriptions point at the right place.
    Using a custom domain? Set a repo variable `SITE_URL=https://your.domain`.
 
