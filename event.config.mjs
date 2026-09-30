@@ -14,9 +14,9 @@ export default {
   // Calendar invites are converted to UTC so they land at the right time for everyone.
   timezone: "America/New_York",
 
-  // Where the site lives once deployed (no trailing slash). Preview cards need an
-  // absolute URL for the image. The GitHub Pages workflow fills this in for you;
-  // set it yourself if you host somewhere else. SITE_URL env var overrides it.
+  // Where the site lives once deployed (no trailing slash), e.g. your custom domain or
+  // https://<project>.pages.dev. Preview cards and calendar subscriptions need this to
+  // be the real URL. A SITE_URL environment variable at build time overrides it.
   siteUrl: "https://example.com",
 
   // Shows up in the preview card + footer.

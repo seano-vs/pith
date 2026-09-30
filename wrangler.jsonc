@@ -1,0 +1,10 @@
+// Cloudflare deploy config (Workers static assets). Build first: `node build.mjs`.
+// Deploy manually with `npx wrangler deploy`, or connect the repo in the Cloudflare
+// dashboard (Workers & Pages → Create → Import a repository) and it deploys on push.
+{
+  "name": "shocktober",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}

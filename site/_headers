@@ -1,0 +1,11 @@
+# Cloudflare Pages / Workers static assets headers.
+# iOS only offers "Add to Calendar" when .ics is served as text/calendar.
+/cal/*
+  Content-Type: text/calendar; charset=utf-8
+  Cache-Control: public, max-age=300
+
+/assets/*
+  Cache-Control: public, max-age=86400
+
+/
+  Cache-Control: public, max-age=300

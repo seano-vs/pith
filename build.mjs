@@ -208,7 +208,6 @@ fs.writeFileSync(path.join(out, "index.html"), html);
 fs.mkdirSync(path.join(out, "cal"), { recursive: true });
 fs.writeFileSync(path.join(out, "cal", "all.ics"), calendar(nights, `${config.title} ${config.year}`));
 for (const n of nights) fs.writeFileSync(path.join(out, n.ics), calendar([n], `${config.title}: ${n.title}`));
-fs.writeFileSync(path.join(out, ".nojekyll"), "");
 
 console.log(`Built ${nights.length} nights → dist/  (site URL: ${siteUrl})`);
 if (siteUrl.includes("example.com")) {

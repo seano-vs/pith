@@ -26,18 +26,33 @@ npm run dev     # builds to dist/ and serves http://localhost:8080
 
 No dependencies. Node 18+ is all you need.
 
-## Deploy (GitHub Pages)
+## Deploy
 
-1. Merge to `main`.
-2. Make `main` the default branch: **Settings → General → Default branch**. By default the
-   `github-pages` environment only accepts deploys from the default branch, so this step is required.
-3. In the repo, go to **Settings → Pages → Source: GitHub Actions**.
-4. Every push to `main` rebuilds and deploys. The workflow passes the real Pages URL
-   in as `SITE_URL`, so preview cards and calendar subscriptions point at the right place.
-   Using a custom domain? Set a repo variable `SITE_URL=https://your.domain`.
+The site is just static files: `node build.mjs` writes everything to `dist/`. Host that folder anywhere.
 
-Any other static host works too (Netlify, Vercel, Cloudflare Pages): the build command is
-`SITE_URL=https://your.site node build.mjs` and the output folder is `dist`.
+### Cloudflare (recommended)
+
+Works with this repo staying private.
+
+1. In the Cloudflare dashboard go to **Workers & Pages → Create → Import a repository**
+   and pick this repo. You'll need to authorize Cloudflare's GitHub app for it.
+2. Settings:
+   - **Build command:** `node build.mjs`
+   - **Deploy command:** `npx wrangler deploy` (Workers). On a Pages project, set the **output directory** to `dist` instead.
+   - **Build variable:** `SITE_URL=https://your-final-url` (custom domain or `https://<project>.pages.dev`)
+3. Every push to `main` redeploys.
+
+Or deploy from your machine: `SITE_URL=https://your-final-url node build.mjs && npx wrangler deploy`.
+
+`site/_headers` makes Cloudflare serve `cal/*.ics` as `text/calendar`. iPhones need that to show "Add to Calendar".
+
+### Anywhere else (nginx, Kubernetes, S3, …)
+
+Serve `dist/` as static files. Make sure `.ics` is served as `text/calendar`. For nginx, stock `mime.types` doesn't include it, so add:
+
+```nginx
+types { text/calendar ics; }
+```
 
 ## Preview card image
 
