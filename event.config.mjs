@@ -14,10 +14,10 @@ export default {
   // Calendar invites are converted to UTC so they land at the right time for everyone.
   timezone: "America/New_York",
 
-  // Where the site lives once deployed (no trailing slash), e.g. your custom domain or
-  // https://<project>.pages.dev. Preview cards and calendar subscriptions need this to
+  // Where the site lives once deployed (no trailing slash). A path works too: the site
+  // is then built into dist/<path>/ and served under it. Preview cards and calendar subscriptions need this to
   // be the real URL. A SITE_URL environment variable at build time overrides it.
-  siteUrl: "https://example.com",
+  siteUrl: "https://example.com/boo",
 
   // Shows up in the preview card + footer.
   hostedBy: "the coven",

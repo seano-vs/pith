@@ -2,6 +2,7 @@
 import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
+import config from "./event.config.mjs";
 
 const root = path.resolve("dist");
 const port = Number(process.env.PORT) || 8080;
@@ -19,4 +20,7 @@ http.createServer((req, res) => {
     if (err) return res.writeHead(404).end("not found");
     res.writeHead(200, { "content-type": types[path.extname(p)] || "application/octet-stream" }).end(buf);
   });
-}).listen(port, () => console.log(`http://localhost:${port}`));
+}).listen(port, () => {
+  const base = new URL(process.env.SITE_URL || config.siteUrl).pathname.replace(/\/+$/, "");
+  console.log(`http://localhost:${port}${base}/`);
+});

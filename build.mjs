@@ -12,8 +12,12 @@ import config from "./event.config.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const src = path.join(root, "site");
-const out = path.join(root, "dist");
+const dist = path.join(root, "dist");
 const siteUrl = (process.env.SITE_URL || config.siteUrl).replace(/\/+$/, "");
+// A site URL with a path (https://example.com/boo) is built into dist/boo/ so the
+// host can serve it under that path.
+const basePath = new URL(siteUrl).pathname.replace(/\/+$/, "");
+const out = path.join(dist, basePath);
 
 // ── time helpers ────────────────────────────────────────────────────────────
 
@@ -184,8 +188,11 @@ const data = {
 
 // ── write ───────────────────────────────────────────────────────────────────
 
-fs.rmSync(out, { recursive: true, force: true });
-fs.cpSync(src, out, { recursive: true, filter: (p) => !p.endsWith("og.html") });
+fs.rmSync(dist, { recursive: true, force: true });
+fs.cpSync(src, out, { recursive: true, filter: (p) => !p.endsWith("og.html") && !p.endsWith("_headers") });
+// Cloudflare reads _headers from the root of the assets directory; prefix its paths with the base path.
+const headers = fs.readFileSync(path.join(src, "_headers"), "utf8").replace(/^\/(\S*)/gm, (m, rest) => `${basePath}/${rest}`);
+fs.writeFileSync(path.join(dist, "_headers"), headers);
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 const tokens = {
@@ -209,7 +216,7 @@ fs.mkdirSync(path.join(out, "cal"), { recursive: true });
 fs.writeFileSync(path.join(out, "cal", "all.ics"), calendar(nights, `${config.title} ${config.year}`));
 for (const n of nights) fs.writeFileSync(path.join(out, n.ics), calendar([n], `${config.title}: ${n.title}`));
 
-console.log(`Built ${nights.length} nights → dist/  (site URL: ${siteUrl})`);
+console.log(`Built ${nights.length} nights → ${path.relative(root, out) || "dist"}/  (site URL: ${siteUrl})`);
 if (siteUrl.includes("example.com")) {
   console.warn("⚠  siteUrl is still example.com — preview cards and calendar subscriptions need your real URL.");
 }

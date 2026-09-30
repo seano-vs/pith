@@ -21,7 +21,7 @@ Everything lives in **`event.config.mjs`**: title, timezone, nights (date, times
 ## Run locally
 
 ```sh
-npm run dev     # builds to dist/ and serves http://localhost:8080
+npm run dev     # builds to dist/ and serves http://localhost:8080/boo/
 ```
 
 No dependencies. Any Node 18+ works; 26 is pinned for Cloudflare and CI.
@@ -32,19 +32,19 @@ The site is just static files: `node build.mjs` writes everything to `dist/`. Ho
 
 ### Cloudflare (recommended)
 
-Works with this repo staying private.
+The site is served at **https://example.com/boo**. `wrangler.jsonc` routes only `example.com/boo`
+and `example.com/boo/*` to this Worker, so the rest of example.com is untouched.
 
 1. In the Cloudflare dashboard go to **Workers & Pages → Create → Import a repository**
    and pick this repo. You'll need to authorize Cloudflare's GitHub app for it.
-2. Settings:
-   - **Build command:** `node build.mjs`
-   - **Deploy command:** `npx wrangler deploy` (Workers). On a Pages project, set the **output directory** to `dist` instead.
-   - **Build variable:** `SITE_URL=https://your-final-url` (custom domain or `https://<project>.pages.dev`)
-3. Every push to `main` redeploys.
+2. Build command: `node build.mjs`. Deploy command: `npx wrangler deploy`.
+3. Every push to `main` rebuilds and redeploys.
 
-Or deploy from your machine: `SITE_URL=https://your-final-url node build.mjs && npx wrangler deploy`.
+To move it, change `siteUrl` in `event.config.mjs` and the `routes` in `wrangler.jsonc` together.
+A path in `siteUrl` makes the build output go to `dist/<path>/`, and `/boo` redirects to `/boo/`.
 
-`site/_headers` makes Cloudflare serve `cal/*.ics` as `text/calendar`. iPhones need that to show "Add to Calendar".
+`site/_headers` makes Cloudflare serve `.ics` as `text/calendar`. iPhones need that to show
+"Add to Calendar". The build prefixes its paths with `/boo`.
 
 ### Anywhere else (nginx, Kubernetes, S3, …)
 

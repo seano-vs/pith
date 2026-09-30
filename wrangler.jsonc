@@ -5,6 +5,14 @@
   "name": "shocktober",
   "compatibility_date": "2026-09-01",
   "assets": {
-    "directory": "./dist"
-  }
+    "directory": "./dist",
+    // /boo redirects to /boo/ so the page's relative links resolve under /boo/.
+    "html_handling": "auto-trailing-slash"
+  },
+  // Serve only example.com/boo from this Worker; the rest of example.com is untouched.
+  // Keep these in sync with siteUrl in event.config.mjs.
+  "routes": [
+    { "pattern": "example.com/boo", "zone_name": "example.com" },
+    { "pattern": "example.com/boo/*", "zone_name": "example.com" }
+  ]
 }
