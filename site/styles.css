@@ -534,7 +534,6 @@ a.fact .sub { color: var(--ink); text-decoration: underline; text-decoration-col
 @media (min-width: 720px) {
   .wrap { max-width: 620px; padding-top: 40px; }
   .cta { grid-template-columns: 1fr 1fr; }
-  .foot .cta { grid-template-columns: 1fr; max-width: 320px; margin-inline: auto; }
   .h2 { font-size: 56px; }
   .wrap { overflow-x: visible; }
   .s-bats-hero { width: 120px; left: -44px; }
