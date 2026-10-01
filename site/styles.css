@@ -409,6 +409,9 @@ a.fact .sub { color: var(--ink); text-decoration: underline; text-decoration-col
 .notes ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
 .notes li { position: relative; padding-left: 22px; font-size: 15px; line-height: 1.4; }
 .notes li::before { content: "✗"; position: absolute; left: 2px; top: 0; color: var(--blood); font-weight: 700; }
+.notes.is-plain { padding-top: 18px; }
+.notes.is-plain li { padding-left: 0; font-size: 16px; }
+.notes.is-plain li::before { content: none; }
 
 .alt-maps { margin: 18px 0 0; text-align: center; font: 400 17px/1 var(--f-vhs); color: var(--muted); letter-spacing: 0.04em; }
 .alt-maps a { color: var(--muted); text-underline-offset: 3px; }

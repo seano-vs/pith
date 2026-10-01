@@ -32,7 +32,7 @@ export default {
   // ── The places ────────────────────────────────────────────────────────────
   // name: shown as the night's title · place: shown next to the address
   // notes: special instructions, shown on every night at this place
-  // notesTitle: heading over the notes (defaults to "Host says…")
+  // notesTitle: heading over the notes (defaults to "Host says…"; "" hides it)
   venues: {
     elvira: {
       name: "Elvira's",
@@ -52,7 +52,8 @@ export default {
       host: "Boris",
       address: "666 Hollow Rd, New York, NY",
       tagline: "Boris's brand new apartment that he just moved into!",
-      notes: ["He doesn't have a couch yet, so bring your own chairs."],
+      notesTitle: "",
+      notes: ["Boris just moved in! But his couch hasn't yet. So bring your own chair or ask a friend for one!"],
     },
     regal: {
       name: "Regal Union Square",
