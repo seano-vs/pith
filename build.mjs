@@ -14,7 +14,8 @@ const root = path.dirname(fileURLToPath(import.meta.url));
 const src = path.join(root, "site");
 const dist = path.join(root, "dist");
 const siteUrl = (process.env.SITE_URL || config.siteUrl).replace(/\/+$/, "");
-// Served under a path (example.com/boo) on Cloudflare: build into dist/<path>/.
+// A site URL with a path (https://example.com/boo) is built into dist/boo/ so the
+// host can serve it under that path.
 const basePath = new URL(siteUrl).pathname.replace(/\/+$/, "");
 const out = path.join(dist, basePath);
 
@@ -82,12 +83,13 @@ function fold(line) {
 
 function vevent(n) {
   const desc = [
+    n.venue,
     n.tagline,
-    `Hosted by ${n.host}.`,
-    ...(n.notes.length ? ["", "Host notes:", ...n.notes.map((x) => `• ${x}`)] : []),
+    n.host && `Hosted by ${n.host}.`,
+    ...(n.notes.length ? ["", n.notesTitle || "Notes:", ...n.notes.map((x) => `• ${x}`)] : []),
     "",
     `${siteUrl}/#night-${n.id}`,
-  ].join("\n");
+  ].filter((x) => x != null && x !== false).join("\n");
   return [
     "BEGIN:VEVENT",
     `UID:${n.id}-${config.year}@${new URL(siteUrl).hostname}`,
@@ -95,7 +97,7 @@ function vevent(n) {
     `DTSTART:${icsStamp(new Date(n.startUtc))}`,
     `DTEND:${icsStamp(new Date(n.endUtc))}`,
     `SUMMARY:${icsEscape(`${config.title}: ${n.title}`)}`,
-    `LOCATION:${icsEscape(`${n.venue}, ${n.address}`)}`,
+    `LOCATION:${icsEscape(n.address)}`,
     `DESCRIPTION:${icsEscape(desc)}`,
     `URL:${siteUrl}/#night-${n.id}`,
     "BEGIN:VALARM",
@@ -125,24 +127,41 @@ function calendar(nights, name) {
 
 // ── data ────────────────────────────────────────────────────────────────────
 
+// Nights point at a venue (`at`); the venue fills in place, address, host and notes.
+const venues = config.venues || {};
 const ids = new Set();
 const nights = [...config.nights]
   .sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start))
-  .map((n, i) => {
-    for (const k of ["id", "date", "start", "end", "title", "venue", "address"]) {
-      if (!n[k]) throw new Error(`Night #${i + 1} is missing "${k}"`);
+  .map((raw, i) => {
+    const v = raw.at ? venues[raw.at] : {};
+    if (!v) throw new Error(`Night #${i + 1} points at unknown venue "${raw.at}"`);
+    const n = {
+      ...raw,
+      id: raw.id || `${new Date(`${raw.date}T12:00:00Z`).toLocaleString("en-US", { month: "short", timeZone: "UTC" }).toLowerCase()}-${raw.date.slice(8)}`,
+      title: raw.title || v.name,
+      venue: raw.venue || v.place || v.name,
+      address: raw.address || v.address,
+      host: raw.host ?? v.host,
+      tagline: raw.tagline ?? v.tagline,
+      notesTitle: raw.notesTitle ?? v.notesTitle,
+      notes: [...(v.notes || []), ...(raw.notes || [])],
+    };
+    for (const k of ["date", "start", "title", "venue", "address"]) {
+      if (!n[k]) throw new Error(`Night #${i + 1} (${n.date}) is missing "${k}"`);
     }
-    if (ids.has(n.id)) throw new Error(`Duplicate night id "${n.id}"`);
+    if (ids.has(n.id)) throw new Error(`Duplicate night id "${n.id}" — give one of them an explicit id`);
     ids.add(n.id);
-    const endDate = n.end <= n.start ? addDays(n.date, 1) : n.date;
     const start = zonedToUtc(n.date, n.start, config.timezone);
-    const end = zonedToUtc(endDate, n.end, config.timezone);
+    const end = n.end
+      ? zonedToUtc(n.end <= n.start ? addDays(n.date, 1) : n.date, n.end, config.timezone)
+      : new Date(start.getTime() + (n.hours || config.defaultHours || 3) * 36e5);
+    const details = [n.venue, n.tagline, n.host && `Hosted by ${n.host}.`].filter(Boolean).join("\n");
     const gcal = new URL("https://calendar.google.com/calendar/render");
     gcal.searchParams.set("action", "TEMPLATE");
     gcal.searchParams.set("text", `${config.title}: ${n.title}`);
     gcal.searchParams.set("dates", `${icsStamp(start)}/${icsStamp(end)}`);
-    gcal.searchParams.set("location", `${n.venue}, ${n.address}`);
-    gcal.searchParams.set("details", `${n.tagline || ""}\nHosted by ${n.host}.\n\n${siteUrl}/#night-${n.id}`);
+    gcal.searchParams.set("location", n.address);
+    gcal.searchParams.set("details", `${details}\n\n${siteUrl}/#night-${n.id}`);
     gcal.searchParams.set("ctz", config.timezone);
     const outlook = new URL("https://outlook.live.com/calendar/0/deeplink/compose");
     outlook.searchParams.set("path", "/calendar/action/compose");
@@ -150,15 +169,15 @@ const nights = [...config.nights]
     outlook.searchParams.set("subject", `${config.title}: ${n.title}`);
     outlook.searchParams.set("startdt", start.toISOString());
     outlook.searchParams.set("enddt", end.toISOString());
-    outlook.searchParams.set("location", `${n.venue}, ${n.address}`);
-    outlook.searchParams.set("body", `${n.tagline || ""} Hosted by ${n.host}. ${siteUrl}/#night-${n.id}`);
+    outlook.searchParams.set("location", n.address);
+    outlook.searchParams.set("body", `${details.replace(/\n/g, " ")} ${siteUrl}/#night-${n.id}`);
     return {
       notes: [],
       ...n,
       number: i + 1,
       startUtc: start.toISOString(),
       endUtc: end.toISOString(),
-      timeLabel: `${fmtTime(n.start)} – ${fmtTime(n.end)} ${tzAbbr(start, config.timezone)}`,
+      timeLabel: `${fmtTime(n.start)}${n.end ? ` – ${fmtTime(n.end)}` : ""} ${tzAbbr(start, config.timezone)}`,
       startLabel: fmtTime(n.start),
       ics: `cal/${n.id}.ics`,
       gcal: gcal.toString(),
@@ -171,7 +190,6 @@ const icsAllUrl = `${siteUrl}/cal/all.ics`;
 const data = {
   title: config.title,
   subtitle: config.subtitle,
-  hostedBy: config.hostedBy,
   year: config.year,
   month: config.month,
   monthName,
@@ -181,7 +199,6 @@ const data = {
   nights,
   movies: config.movies || [],
   allIcs: "cal/all.ics",
-  webcal: icsAllUrl.replace(/^https?:/, "webcal:"),
   gcalSubscribe: `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(icsAllUrl.replace(/^https?:/, "webcal:"))}`,
 };
 
@@ -199,9 +216,9 @@ const tokens = {
   PAGE_TITLE: esc(`${config.title} · ${monthName} ${config.year}`),
   DESCRIPTION: esc(config.previewDescription || config.subtitle),
   SUBTITLE: esc(config.subtitle),
-  HOSTED_BY: esc(config.hostedBy),
   MONTH_LABEL: esc(`${monthName} ${config.year}`),
   NIGHT_COUNT: String(nights.length),
+  VENUE_COUNT: String(new Set(nights.map((n) => n.address)).size),
   SITE_URL: esc(siteUrl),
   OG_IMAGE: esc(`${siteUrl}/assets/og.jpg?v=${Date.now().toString(36)}`),
   // </script> can't appear inside the JSON block
@@ -215,7 +232,7 @@ fs.mkdirSync(path.join(out, "cal"), { recursive: true });
 fs.writeFileSync(path.join(out, "cal", "all.ics"), calendar(nights, `${config.title} ${config.year}`));
 for (const n of nights) fs.writeFileSync(path.join(out, n.ics), calendar([n], `${config.title}: ${n.title}`));
 
-console.log(`Built ${nights.length} nights → dist/  (site URL: ${siteUrl})`);
+console.log(`Built ${nights.length} nights → ${path.relative(root, out) || "dist"}/  (site URL: ${siteUrl})`);
 if (siteUrl.includes("example.com")) {
   console.warn("⚠  siteUrl is still example.com — preview cards and calendar subscriptions need your real URL.");
 }

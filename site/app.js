@@ -28,11 +28,10 @@
     };
   };
 
-  const mapsLinks = (n) => {
+  // Apple Maps on iPhone/Mac, Google Maps everywhere else.
+  const mapsUrl = (n) => {
     const q = encodeURIComponent(n.address);
-    const apple = `https://maps.apple.com/?daddr=${q}`;
-    const google = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
-    return isApple ? { primary: apple, alt: google, altName: "Google Maps" } : { primary: google, alt: apple, altName: "Apple Maps" };
+    return isApple ? `https://maps.apple.com/?daddr=${q}` : `https://www.google.com/maps/dir/?api=1&destination=${q}`;
   };
 
   // ── fit the title to its container ──────────────────────────────────────
@@ -52,7 +51,6 @@
   const run = words.map((w) => `<span>${esc(w)}</span><span class="dot">✦</span>`).join("");
   $("#marquee").innerHTML = run.repeat(4) + run.repeat(4); // two identical halves → seamless loop
 
-  $("#tzname").textContent = data.timezone.replace(/_/g, " ");
 
   // ── countdown ───────────────────────────────────────────────────────────
   const cd = $("#countdown");
@@ -84,7 +82,7 @@
     const cls = ["cal-day", ds < todayStr && "is-past", ds === todayStr && "is-today", n && "has-event"].filter(Boolean).join(" ");
     if (n) {
       cal += `<a class="${cls}${status(n) === "past" ? " is-past" : ""}" href="#night-${n.id}" role="gridcell" aria-label="${esc(`${dayInfo(ds).dowLong} October ${d}: ${n.title}`)}">
-        <img src="${esc(gifSrc(n.gif))}" alt="" loading="lazy"><span class="num">${d}</span><span class="pip">🔪</span></a>`;
+        <img src="${esc(gifSrc(n.gif))}" alt="" loading="lazy"><span class="num">${d}</span><span class="pip">${esc(n.calIcon || "🔪")}</span></a>`;
     } else {
       cal += `<div class="${cls}" role="gridcell"><span class="num">${d}</span></div>`;
     }
@@ -95,15 +93,16 @@
   $("#night-list").innerHTML = nights.map((n) => {
     const info = dayInfo(n.date);
     const st = status(n);
-    const maps = mapsLinks(n);
+    const maps = mapsUrl(n);
     const badge = st === "now" ? `<span class="badge badge-now">HAPPENING NOW</span>`
       : n === nextNight ? `<span class="badge badge-next">NEXT UP</span>`
       : st === "past" ? `<span class="badge badge-past">R.I.P.</span>` : "";
     const notes = n.notes.length
-      ? `<div class="notes"><h4>Host says…</h4><ul>${n.notes.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "";
+      ? `<div class="notes${!(n.notesTitle ?? "Host says…") && n.notes.length === 1 ? " is-plain" : ""}">${(n.notesTitle ?? "Host says…") ? `<h4>${esc(n.notesTitle ?? "Host says…")}</h4>` : ""}<ul>${n.notes.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "";
     return `
     <article class="night${st === "past" ? " is-past" : ""}" id="night-${esc(n.id)}">
       <span class="night-num">NIGHT ${pad(n.number)}</span>${badge}
+      <div class="night-media">
       <figure class="vhs">
         <img src="${esc(gifSrc(n.gif))}" alt="" loading="lazy">
         <figcaption class="osd" aria-hidden="true">
@@ -111,6 +110,8 @@
           <span class="osd-br">${info.mon.toUpperCase()}.${pad(info.day)} ${esc(n.startLabel)}</span>
         </figcaption>
       </figure>
+      ${n.sticker ? `<img class="night-sticker" src="${esc(gifSrc(n.sticker))}" alt="" loading="lazy">` : ""}
+      </div>
       <div class="night-body">
         <div class="night-head">
           <div class="datebox" aria-hidden="true"><span class="mon">${info.mon.toUpperCase()}</span><span class="d">${info.day}</span><span class="dow">${info.dow.toUpperCase()}</span></div>
@@ -122,14 +123,10 @@
         <dl class="facts">
           <div class="fact"><span class="ico">🕯️</span><div><dt>When</dt><dd>${info.dowLong}, ${info.mon} ${info.day}<span class="sub">${esc(n.timeLabel)}</span></dd></div></div>
           ${n.host ? `<div class="fact"><span class="ico">🧛</span><div><dt>Host</dt><dd>${esc(n.host)}</dd></div></div>` : ""}
-          <a class="fact" href="${esc(maps.primary)}" target="_blank" rel="noopener"><span class="ico">📍</span><div><dt>Where · tap for directions</dt><dd>${esc(n.venue)}<span class="sub">${esc(n.address)}</span></dd></div></a>
+          <a class="fact" href="${esc(maps)}" target="_blank" rel="noopener"><span class="ico">📍</span><div><dt>Where · tap for directions</dt><dd>${esc(n.venue)}<span class="sub">${esc(n.address)}</span></dd></div></a>
         </dl>
         ${notes}
-        <div class="night-actions">
-          <a class="btn btn-blood btn-sm" href="${esc(maps.primary)}" target="_blank" rel="noopener">🧭 Directions</a>
-          <button class="btn btn-bone btn-sm" type="button" data-cal="${esc(n.id)}">🗓️ Add to cal</button>
-        </div>
-        <p class="alt-maps"><a href="${esc(maps.alt)}" target="_blank" rel="noopener">Open in ${maps.altName}</a> · <button type="button" data-copy="${esc(n.address)}">Copy address</button></p>
+        <p class="alt-maps"><button type="button" data-copy="${esc(n.address)}">Copy address</button></p>
       </div>
     </article>`;
   }).join("");
@@ -139,10 +136,13 @@
   const shelf = $("#shelf");
   shelf.innerHTML = data.movies.map((m, i) => {
     const watchedOn = m.watched && nights.find((n) => n.id === m.watched);
-    const tag = watchedOn ? `✓ night ${pad(watchedOn.number)}` : m.watched ? "✓ watched" : m.tag || "";
+    const meta = [m.year, watchedOn ? `✓ watched night ${pad(watchedOn.number)}` : m.watched ? "✓ watched" : m.tag].filter(Boolean).join(" · ");
+    const trailer = m.trailer
+      ? `<a class="trailer" href="${esc(m.trailer)}" target="_blank" rel="noopener" aria-label="Watch the ${esc(m.title)} trailer">▶ Trailer</a>`
+      : "";
     return `<li class="tape-spine${m.watched ? " is-watched" : ""}" style="--label:${labels[i % labels.length]}">
-      <div class="label"><span class="mt">${esc(m.title)}</span>${m.year ? `<span class="yr">${esc(m.year)}</span>` : ""}</div>
-      <span class="tag">${esc(tag)}</span></li>`;
+      <div class="label"><span class="mt">${esc(m.title)}</span>${meta ? `<span class="yr">${esc(meta)}</span>` : ""}</div>
+      ${trailer}</li>`;
   }).join("");
 
   const summonBtn = $("#summon");
@@ -168,7 +168,8 @@
         spines[pick].classList.add("is-picked");
         spines[pick].scrollIntoView({ behavior: "smooth", block: "center" });
         const m = data.movies[pick];
-        result.textContent = `☠ ${m.title}${m.year ? ` (${m.year})` : ""}`;
+        result.innerHTML = `☠ ${esc(m.title)}${m.year ? ` (${esc(m.year)})` : ""}` +
+          (m.trailer ? ` <a href="${esc(m.trailer)}" target="_blank" rel="noopener">▶ trailer</a>` : "");
         summonBtn.disabled = false;
       }
     };
@@ -186,7 +187,6 @@
       $("#sheet-title").textContent = `Add ${data.title} to your calendar`;
       $("#sheet-options").innerHTML = [
         opt(data.allIcs, "🍎", "Apple Calendar / iPhone", "Adds every night at once. Tap “Add All” on the next screen."),
-        opt(data.webcal, "🔄", "Subscribe (auto-updates)", "If a night moves, your calendar updates itself. iPhone, Mac & Outlook."),
         opt(data.gcalSubscribe, "🟦", "Google Calendar", "Subscribes to the whole lineup. Best done on a computer.", true),
         opt(data.allIcs, "⬇️", "Download .ics", "Outlook, Proton, Fantastical, anything else."),
       ].join("");
