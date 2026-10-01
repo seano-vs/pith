@@ -51,7 +51,7 @@ export default {
       place: "Boris's apartment",
       host: "Boris",
       address: "666 Hollow Rd, New York, NY",
-      tagline: "Boris's brand new apartment that he just moved into!",
+      tagline: "Boris's brand new apartment!",
       notesTitle: "",
       notes: ["Boris just moved in! But his couch hasn't yet. So bring your own chair or ask a friend for one!"],
     },
