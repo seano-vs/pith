@@ -12,11 +12,16 @@ No RSVPs, no accounts, no tracking. Just a link you text to people.
 
 ## Edit the event
 
-Everything lives in **`event.config.mjs`**: title, timezone, nights (date, times, host, address, notes, gif) and the movie pool.
+Everything lives in **`event.config.mjs`**:
 
-- Times are wall-clock in `timezone`. If an `end` is earlier than its `start`, the night ends after midnight.
-- To cross off a movie, add `watched: "<night id>"` to it.
+- `venues`: each place's name, address, host and standing notes (e.g. "bring your own chairs").
+- `nights`: one line per night, a date, a start time, which venue (`at`) and a GIF.
+  A night can override `title`, `tagline`, `notes` or add an `end` time. Without an `end`, the page
+  shows only the start time and calendar invites last `defaultHours`.
+- `movies`: the pool, each with a YouTube `trailer` link. To cross one off, add `watched: "oct-04"`.
 - GIFs go in `site/assets/gifs/`. A night's `gif` can also be any `https://` URL.
+
+Times are wall-clock in `timezone` (New York).
 
 ## Run locally
 

@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 //  EDIT THIS FILE. Everything on the page (and the calendar files) comes from it.
-//  After editing, run `npm run build` (or just push — GitHub Actions rebuilds).
+//  Push to main and Cloudflare rebuilds the site.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default {
@@ -15,151 +15,79 @@ export default {
   timezone: "America/New_York",
 
   // Where the site lives once deployed (no trailing slash). A path works too: the site
-  // is then built into dist/<path>/ and served under it. Preview cards and calendar subscriptions need this to
-  // be the real URL. A SITE_URL environment variable at build time overrides it.
+  // is then built into dist/<path>/ and served under it. Preview cards and calendar
+  // subscriptions need this to be the real URL. A SITE_URL env var overrides it.
   siteUrl: "https://example.com/boo",
 
   // Shows up in the preview card + footer.
   hostedBy: "the coven",
-  previewDescription: "6 nights. 6 haunts. No RSVP — just show up, bring snacks, scream responsibly.",
+  previewDescription: "10 nights of horror movies across NYC. Just show up, bring snacks, scream responsibly.",
 
   // Scrolls across the caution-tape banner.
-  marquee: ["NO RSVP NEEDED", "BRING SNACKS", "SCREAMS WELCOME", "BYOB(lanket)", "PHONES FACE DOWN", "DON'T SPLIT UP"],
+  marquee: ["JUST SHOW UP", "BRING SNACKS", "SCREAMS WELCOME", "BYOB(lanket)", "PHONES FACE DOWN", "DON'T SPLIT UP"],
+
+  // How long a night lasts in calendar invites when it has no `end`.
+  defaultHours: 3,
+
+  // ── The places ────────────────────────────────────────────────────────────
+  // name: shown as the night's title · place: shown next to the address
+  // notes: special instructions, shown on every night at this place
+  venues: {
+    elvira: {
+      name: "Elvira's",
+      place: "Elvira's apartment",
+      host: "Elvira",
+      address: "1313 Mockingbird Ln, New York, NY",
+    },
+    vincent: {
+      name: "Vincent's",
+      place: "Vincent's apartment",
+      host: "Vincent",
+      address: "13 Elm St, New York, NY",
+    },
+    boris: {
+      name: "Boris's",
+      place: "Boris's apartment",
+      host: "Boris",
+      address: "666 Hollow Rd, New York, NY",
+      tagline: "Boris's brand new apartment that he just moved into!",
+      notes: ["He doesn't have a couch yet, so bring your own chairs."],
+    },
+    regal: {
+      name: "Regal Union Square",
+      place: "Regal Union Square",
+      address: "850 Broadway, New York, NY 10003",
+      tagline: "It's a movie theater. A real one.",
+      notes: ["I'll have your tickets.", "Please signal me if you can come!"],
+    },
+  },
 
   // ── The nights ────────────────────────────────────────────────────────────
-  // date: YYYY-MM-DD · start/end: 24h "HH:MM" (end earlier than start = ends after midnight)
+  // date: YYYY-MM-DD · start: 24h "HH:MM" · at: a key from `venues` above
+  // Optional: end ("HH:MM"; earlier than start = after midnight), title, tagline, notes, host.
   // gif: file in site/assets/gifs/ (or any https:// URL)
-  // notes: host's special instructions (shown as a checklist)
   nights: [
-    {
-      id: "carve",
-      date: "2026-10-03",
-      start: "18:30",
-      end: "23:00",
-      title: "Carve & Creature Feature",
-      tagline: "Pumpkin guts, then a monster movie.",
-      host: "Laurie",
-      venue: "Laurie's Place",
-      address: "45 Lampkin Ln, Haddonfield, IL",
-      gif: "pumpkins.webp",
-      notes: [
-        "Pumpkins provided — bring your own carving knife if you're picky.",
-        "Wear clothes you don't mind getting pumpkin on.",
-        "Street parking only, don't block the driveway.",
-      ],
-    },
-    {
-      id: "ghostface",
-      date: "2026-10-09",
-      start: "20:00",
-      end: "23:59",
-      title: "What's Your Favorite Scary Movie?",
-      tagline: "Meta-slasher night. Landline-era vibes.",
-      host: "Sidney",
-      venue: "The Woodsboro House",
-      address: "261 Turner Ln, Woodsboro, CA",
-      gif: "ghostface.webp",
-      notes: [
-        "Gate code is 1996#.",
-        "If the phone rings, don't answer it.",
-      ],
-    },
-    {
-      id: "elm-street",
-      date: "2026-10-16",
-      start: "21:00",
-      end: "02:00",
-      title: "Elm Street Sleepover",
-      tagline: "Double feature. Whatever you do, don't fall asleep.",
-      host: "Nancy",
-      venue: "1428 Elm",
-      address: "1428 Elm St, Springwood, OH",
-      gif: "freddy.webp",
-      notes: [
-        "Pajamas encouraged. Coffee provided.",
-        "Shoes off at the door.",
-        "Cat lives here — heads up if you're allergic.",
-      ],
-    },
-    {
-      id: "chucky",
-      date: "2026-10-23",
-      start: "19:30",
-      end: "23:30",
-      title: "Child's Play Date",
-      tagline: "Killer dolls + a very unserious snack table.",
-      host: "Andy",
-      venue: "Apartment 4B",
-      address: "666 Toy Box Ave, Chicago, IL",
-      gif: "chucky.webp",
-      notes: [
-        "Buzz 4B. Elevator is haunted (broken). Take the stairs.",
-        "Potluck — bring a snack to share.",
-      ],
-    },
-    {
-      id: "overlook",
-      date: "2026-10-30",
-      start: "20:00",
-      end: "23:59",
-      title: "Heeere's Friday",
-      tagline: "The Overlook is open for the season. Room 237 is off-limits.",
-      host: "Wendy",
-      venue: "The Overlook",
-      address: "The Stanley Hotel, Estes Park, CO",
-      gif: "jack.webp",
-      notes: [
-        "Park in the back lot, use the side door.",
-        "Dress code: flannel. Axes optional (please no real axes).",
-      ],
-    },
-    {
-      id: "halloween",
-      date: "2026-10-31",
-      start: "19:00",
-      end: "01:00",
-      title: "Halloween Night",
-      tagline: "The finale. Costumes mandatory. The Shape is watching.",
-      host: "Tommy",
-      venue: "The Myers House",
-      address: "1031 Shape St, Haddonfield, IL",
-      gif: "myers.webp",
-      notes: [
-        "COSTUMES REQUIRED. No costume, no candy.",
-        "Trick-or-treaters until 8:30 — help hand out candy.",
-        "Best costume wins control of the remote.",
-      ],
-    },
+    { date: "2026-10-04", start: "21:00", at: "elvira", gif: "pumpkins.webp" },
+    { date: "2026-10-05", start: "19:00", at: "vincent", gif: "ghostface.webp" },
+    { date: "2026-10-07", start: "21:00", at: "vincent", gif: "freddy.webp" },
+    { date: "2026-10-12", start: "16:40", at: "regal", gif: "theater.webp" },
+    { date: "2026-10-14", start: "21:00", at: "vincent", gif: "chucky.webp" },
+    { date: "2026-10-17", start: "19:00", at: "boris", gif: "skeleton-big.webp" },
+    { date: "2026-10-18", start: "19:00", at: "elvira", gif: "pennywise.webp" },
+    { date: "2026-10-21", start: "21:00", at: "vincent", gif: "haunted-house.webp" },
+    { date: "2026-10-26", start: "19:00", at: "elvira", gif: "jack.webp" },
+    { date: "2026-10-30", start: "19:00", at: "elvira", gif: "myers.webp" },
   ],
 
   // ── The movie pool ────────────────────────────────────────────────────────
-  // Add `watched: "carve"` (a night's id) to cross a movie off after that night.
+  // Each night we pull one at random. Add `watched: "oct-04"` (a night's date as
+  // oct-DD) to cross a movie off after that night.
   movies: [
-    { title: "Halloween", year: 1978, tag: "slasher" },
-    { title: "The Thing", year: 1982, tag: "creature" },
-    { title: "Scream", year: 1996, tag: "slasher" },
-    { title: "The Shining", year: 1980, tag: "haunted" },
-    { title: "A Nightmare on Elm Street", year: 1984, tag: "slasher" },
-    { title: "Hereditary", year: 2018, tag: "occult" },
-    { title: "Suspiria", year: 1977, tag: "giallo" },
-    { title: "It Follows", year: 2014, tag: "curse" },
-    { title: "The Babadook", year: 2014, tag: "psych" },
-    { title: "Get Out", year: 2017, tag: "psych" },
-    { title: "The Descent", year: 2005, tag: "creature" },
-    { title: "Talk to Me", year: 2023, tag: "possession" },
-    { title: "Barbarian", year: 2022, tag: "wtf" },
-    { title: "X", year: 2022, tag: "slasher" },
-    { title: "Pearl", year: 2022, tag: "slasher" },
-    { title: "Longlegs", year: 2024, tag: "occult" },
-    { title: "The Witch", year: 2015, tag: "folk" },
-    { title: "Midsommar", year: 2019, tag: "folk" },
-    { title: "Rosemary's Baby", year: 1968, tag: "occult" },
-    { title: "The Texas Chain Saw Massacre", year: 1974, tag: "slasher" },
-    { title: "Evil Dead II", year: 1987, tag: "splatter" },
-    { title: "Child's Play", year: 1988, tag: "slasher" },
-    { title: "The Substance", year: 2024, tag: "body" },
-    { title: "Sinners", year: 2025, tag: "vampire" },
-    { title: "Weapons", year: 2025, tag: "wtf" },
-    { title: "Nosferatu", year: 2024, tag: "vampire" },
+    { title: "Come to Daddy", year: 2019, tag: "wtf", trailer: "https://www.youtube.com/watch?v=3D05YjZmVSI" },
+    { title: "Companion", year: 2025, tag: "sci-fi", trailer: "https://www.youtube.com/watch?v=Qr_kX0D3DNA" },
+    { title: "Heretic", year: 2024, tag: "psych", trailer: "https://www.youtube.com/watch?v=O9i2vmFhSSY" },
+    { title: "Let the Right One In", year: 2008, tag: "vampire", trailer: "https://www.youtube.com/watch?v=ICp4g9p_rgo" },
+    { title: "Smile 2", year: 2024, tag: "curse", trailer: "https://www.youtube.com/watch?v=0HY6QFlBzUY" },
+    { title: "The Thing", year: 1982, tag: "creature", trailer: "https://www.youtube.com/watch?v=ySvzHdtCiWE" },
   ],
 };

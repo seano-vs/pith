@@ -439,28 +439,37 @@ a.fact .sub { color: var(--ink); text-decoration: underline; text-decoration-col
 }
 .tape-spine .label {
   grid-column: 2;
-  display: flex; align-items: center; gap: 10px;
+  display: flex; flex-direction: column; justify-content: center; gap: 3px;
   margin: 7px 0 7px 10px;
-  padding: 6px 10px 5px;
+  padding: 7px 10px 6px;
   border-radius: 3px;
   background: var(--label);
   color: #111;
   min-width: 0;
 }
-.tape-spine .mt { font: 400 23px/1 var(--f-head); letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1; }
-.tape-spine .yr { font: 400 17px/1 var(--f-vhs); flex: none; opacity: 0.8; }
-.tape-spine .tag {
+.tape-spine .mt { font: 400 23px/1 var(--f-head); letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tape-spine .yr { font: 400 16px/1 var(--f-vhs); letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.75; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tape-spine .trailer {
   grid-column: 3; align-self: center;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px;
   margin: 0 10px;
-  font: 400 15px/1 var(--f-vhs);
-  letter-spacing: 0.08em;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: var(--blood);
+  color: #fff;
+  font: 400 19px/1 var(--f-vhs);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--muted);
-  width: 82px; text-align: right;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 3px 0 var(--blood-deep);
+  -webkit-tap-highlight-color: transparent;
 }
+.tape-spine .trailer:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--blood-deep); }
+.summon-result a { color: var(--ink); text-underline-offset: 3px; }
 .tape-spine.is-watched .label { filter: grayscale(0.85) brightness(0.7); }
 .tape-spine.is-watched .mt { text-decoration: line-through; text-decoration-thickness: 2px; }
-.tape-spine.is-watched .tag { color: var(--blood); }
 .tape-spine.is-picked { transform: scale(1.03); box-shadow: 0 0 0 2px var(--bile), 0 0 24px rgba(198, 255, 58, 0.5); z-index: 2; }
 .tape-spine.is-scanning { box-shadow: 0 0 0 2px var(--ink); }
 

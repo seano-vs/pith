@@ -139,10 +139,13 @@
   const shelf = $("#shelf");
   shelf.innerHTML = data.movies.map((m, i) => {
     const watchedOn = m.watched && nights.find((n) => n.id === m.watched);
-    const tag = watchedOn ? `✓ night ${pad(watchedOn.number)}` : m.watched ? "✓ watched" : m.tag || "";
+    const meta = [m.year, watchedOn ? `✓ watched night ${pad(watchedOn.number)}` : m.watched ? "✓ watched" : m.tag].filter(Boolean).join(" · ");
+    const trailer = m.trailer
+      ? `<a class="trailer" href="${esc(m.trailer)}" target="_blank" rel="noopener" aria-label="Watch the ${esc(m.title)} trailer">▶ Trailer</a>`
+      : "";
     return `<li class="tape-spine${m.watched ? " is-watched" : ""}" style="--label:${labels[i % labels.length]}">
-      <div class="label"><span class="mt">${esc(m.title)}</span>${m.year ? `<span class="yr">${esc(m.year)}</span>` : ""}</div>
-      <span class="tag">${esc(tag)}</span></li>`;
+      <div class="label"><span class="mt">${esc(m.title)}</span>${meta ? `<span class="yr">${esc(meta)}</span>` : ""}</div>
+      ${trailer}</li>`;
   }).join("");
 
   const summonBtn = $("#summon");
@@ -168,7 +171,8 @@
         spines[pick].classList.add("is-picked");
         spines[pick].scrollIntoView({ behavior: "smooth", block: "center" });
         const m = data.movies[pick];
-        result.textContent = `☠ ${m.title}${m.year ? ` (${m.year})` : ""}`;
+        result.innerHTML = `☠ ${esc(m.title)}${m.year ? ` (${esc(m.year)})` : ""}` +
+          (m.trailer ? ` <a href="${esc(m.trailer)}" target="_blank" rel="noopener">▶ trailer</a>` : "");
         summonBtn.disabled = false;
       }
     };

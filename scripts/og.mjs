@@ -24,7 +24,8 @@ const days = [...config.nights].sort((a, b) => a.date.localeCompare(b.date)).map
 await page.evaluate(({ config, month, days }) => {
   document.getElementById("kicker").textContent = `${config.hostedBy} presents`;
   document.getElementById("title").textContent = config.title;
-  document.getElementById("sub").textContent = `${config.nights.length} nights · ${config.nights.length} haunts · no RSVP`;
+  const haunts = new Set(config.nights.map((n) => n.at || n.address)).size;
+  document.getElementById("sub").textContent = `${config.nights.length} nights · ${haunts} haunts · NYC`;
   document.getElementById("dates").innerHTML = days.map((d) => `<span>${month.slice(0, 3).toUpperCase()} ${d}</span>`).join("");
 }, { config, month, days });
 await page.evaluate(() => document.fonts.ready);
