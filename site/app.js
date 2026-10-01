@@ -28,11 +28,10 @@
     };
   };
 
-  const mapsLinks = (n) => {
+  // Apple Maps on iPhone/Mac, Google Maps everywhere else.
+  const mapsUrl = (n) => {
     const q = encodeURIComponent(n.address);
-    const apple = `https://maps.apple.com/?daddr=${q}`;
-    const google = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
-    return isApple ? { primary: apple, alt: google, altName: "Google Maps" } : { primary: google, alt: apple, altName: "Apple Maps" };
+    return isApple ? `https://maps.apple.com/?daddr=${q}` : `https://www.google.com/maps/dir/?api=1&destination=${q}`;
   };
 
   // ── fit the title to its container ──────────────────────────────────────
@@ -95,7 +94,7 @@
   $("#night-list").innerHTML = nights.map((n) => {
     const info = dayInfo(n.date);
     const st = status(n);
-    const maps = mapsLinks(n);
+    const maps = mapsUrl(n);
     const badge = st === "now" ? `<span class="badge badge-now">HAPPENING NOW</span>`
       : n === nextNight ? `<span class="badge badge-next">NEXT UP</span>`
       : st === "past" ? `<span class="badge badge-past">R.I.P.</span>` : "";
@@ -125,10 +124,10 @@
         <dl class="facts">
           <div class="fact"><span class="ico">🕯️</span><div><dt>When</dt><dd>${info.dowLong}, ${info.mon} ${info.day}<span class="sub">${esc(n.timeLabel)}</span></dd></div></div>
           ${n.host ? `<div class="fact"><span class="ico">🧛</span><div><dt>Host</dt><dd>${esc(n.host)}</dd></div></div>` : ""}
-          <a class="fact" href="${esc(maps.primary)}" target="_blank" rel="noopener"><span class="ico">📍</span><div><dt>Where · tap for directions</dt><dd>${esc(n.venue)}<span class="sub">${esc(n.address)}</span></dd></div></a>
+          <a class="fact" href="${esc(maps)}" target="_blank" rel="noopener"><span class="ico">📍</span><div><dt>Where · tap for directions</dt><dd>${esc(n.venue)}<span class="sub">${esc(n.address)}</span></dd></div></a>
         </dl>
         ${notes}
-        <p class="alt-maps"><a href="${esc(maps.alt)}" target="_blank" rel="noopener">Open in ${maps.altName}</a> · <button type="button" data-copy="${esc(n.address)}">Copy address</button></p>
+        <p class="alt-maps"><button type="button" data-copy="${esc(n.address)}">Copy address</button></p>
       </div>
     </article>`;
   }).join("");

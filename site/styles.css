@@ -417,7 +417,6 @@ a.fact .sub { color: var(--ink); text-decoration: underline; text-decoration-col
 .notes.is-plain li::before { content: none; }
 
 .alt-maps { margin: 18px 0 0; text-align: center; font: 400 17px/1 var(--f-vhs); color: var(--muted); letter-spacing: 0.04em; }
-.alt-maps a { color: var(--muted); text-underline-offset: 3px; }
 .alt-maps button { background: none; border: 0; padding: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; }
 
 .night.is-past .vhs img { filter: grayscale(1) contrast(0.9); opacity: 0.5; }
