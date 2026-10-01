@@ -67,10 +67,14 @@ export default {
 
   // ── The nights ────────────────────────────────────────────────────────────
   // date: YYYY-MM-DD · start: 24h "HH:MM" · at: a key from `venues` above
-  // Optional: end ("HH:MM"; earlier than start = after midnight), title, tagline, notes, host.
+  // Optional: end ("HH:MM"; earlier than start = after midnight), title, tagline, notes, host,
+  // sticker (a GIF stuck on the card's corner), calIcon (emoji on the calendar day, default 🔪).
   // gif: file in site/assets/gifs/ (or any https:// URL)
   nights: [
-    { date: "2026-10-04", start: "21:00", at: "elvira", gif: "pumpkins.webp" },
+    {
+      date: "2026-10-04", start: "21:00", at: "elvira", gif: "pumpkins.webp",
+      tagline: "🎂 It's Boris's birthday!", sticker: "cake.webp", calIcon: "🎂",
+    },
     { date: "2026-10-05", start: "19:00", at: "vincent", gif: "ghostface.webp" },
     { date: "2026-10-07", start: "21:00", at: "vincent", gif: "freddy.webp" },
     { date: "2026-10-12", start: "16:40", at: "regal", gif: "theater.webp" },

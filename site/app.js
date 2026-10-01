@@ -84,7 +84,7 @@
     const cls = ["cal-day", ds < todayStr && "is-past", ds === todayStr && "is-today", n && "has-event"].filter(Boolean).join(" ");
     if (n) {
       cal += `<a class="${cls}${status(n) === "past" ? " is-past" : ""}" href="#night-${n.id}" role="gridcell" aria-label="${esc(`${dayInfo(ds).dowLong} October ${d}: ${n.title}`)}">
-        <img src="${esc(gifSrc(n.gif))}" alt="" loading="lazy"><span class="num">${d}</span><span class="pip">🔪</span></a>`;
+        <img src="${esc(gifSrc(n.gif))}" alt="" loading="lazy"><span class="num">${d}</span><span class="pip">${esc(n.calIcon || "🔪")}</span></a>`;
     } else {
       cal += `<div class="${cls}" role="gridcell"><span class="num">${d}</span></div>`;
     }
@@ -104,6 +104,7 @@
     return `
     <article class="night${st === "past" ? " is-past" : ""}" id="night-${esc(n.id)}">
       <span class="night-num">NIGHT ${pad(n.number)}</span>${badge}
+      <div class="night-media">
       <figure class="vhs">
         <img src="${esc(gifSrc(n.gif))}" alt="" loading="lazy">
         <figcaption class="osd" aria-hidden="true">
@@ -111,6 +112,8 @@
           <span class="osd-br">${info.mon.toUpperCase()}.${pad(info.day)} ${esc(n.startLabel)}</span>
         </figcaption>
       </figure>
+      ${n.sticker ? `<img class="night-sticker" src="${esc(gifSrc(n.sticker))}" alt="" loading="lazy">` : ""}
+      </div>
       <div class="night-body">
         <div class="night-head">
           <div class="datebox" aria-hidden="true"><span class="mon">${info.mon.toUpperCase()}</span><span class="d">${info.day}</span><span class="dow">${info.dow.toUpperCase()}</span></div>

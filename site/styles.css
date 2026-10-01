@@ -331,6 +331,17 @@ button { font: inherit; color: inherit; }
 }
 .night:target { box-shadow: 0 0 0 2px var(--blood), 0 24px 50px -24px rgba(224, 22, 43, 0.9); }
 .night .vhs { border-radius: 22px 22px 6px 6px; aspect-ratio: 16 / 10; box-shadow: none; }
+.night-media { position: relative; }
+.night-sticker {
+  position: absolute; z-index: 4;
+  right: -8px; bottom: -34px;
+  width: 44%;
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  transform: rotate(5deg);
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.7));
+  pointer-events: none;
+}
 .night-num {
   position: absolute; z-index: 4; top: -14px; left: 14px;
   padding: 6px 10px 5px;
