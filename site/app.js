@@ -125,10 +125,6 @@
           <a class="fact" href="${esc(maps.primary)}" target="_blank" rel="noopener"><span class="ico">📍</span><div><dt>Where · tap for directions</dt><dd>${esc(n.venue)}<span class="sub">${esc(n.address)}</span></dd></div></a>
         </dl>
         ${notes}
-        <div class="night-actions">
-          <a class="btn btn-blood btn-sm" href="${esc(maps.primary)}" target="_blank" rel="noopener">🧭 Directions</a>
-          <button class="btn btn-bone btn-sm" type="button" data-cal="${esc(n.id)}">🗓️ Add to cal</button>
-        </div>
         <p class="alt-maps"><a href="${esc(maps.alt)}" target="_blank" rel="noopener">Open in ${maps.altName}</a> · <button type="button" data-copy="${esc(n.address)}">Copy address</button></p>
       </div>
     </article>`;

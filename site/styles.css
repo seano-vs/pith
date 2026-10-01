@@ -410,8 +410,7 @@ a.fact .sub { color: var(--ink); text-decoration: underline; text-decoration-col
 .notes li { position: relative; padding-left: 22px; font-size: 15px; line-height: 1.4; }
 .notes li::before { content: "✗"; position: absolute; left: 2px; top: 0; color: var(--blood); font-weight: 700; }
 
-.night-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
-.alt-maps { margin: 10px 0 0; text-align: center; font: 400 17px/1 var(--f-vhs); color: var(--muted); letter-spacing: 0.04em; }
+.alt-maps { margin: 18px 0 0; text-align: center; font: 400 17px/1 var(--f-vhs); color: var(--muted); letter-spacing: 0.04em; }
 .alt-maps a { color: var(--muted); text-underline-offset: 3px; }
 .alt-maps button { background: none; border: 0; padding: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; }
 
