@@ -152,14 +152,18 @@ button { font: inherit; color: inherit; }
 }
 .subtitle { margin: 0 auto; max-width: 30ch; font-size: 17px; color: var(--ink); opacity: 0.9; text-wrap: balance; }
 
-.chips { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 0; margin: 18px 0 0; }
-.chips li {
-  font: 500 14px/1 var(--f-body);
-  padding: 9px 13px;
-  border-radius: 999px;
+.fyi {
+  margin: 18px auto 0;
+  max-width: 34ch;
+  padding: 12px 16px;
+  border-radius: 14px;
   background: rgba(243, 234, 219, 0.06);
   border: 1px solid var(--line);
+  font-size: 15px;
+  line-height: 1.4;
+  text-wrap: balance;
 }
+.fyi b { display: block; margin-bottom: 4px; font: 400 18px/1 var(--f-vhs); letter-spacing: 0.12em; color: var(--pumpkin); }
 
 .countdown {
   margin: 18px auto 0;
