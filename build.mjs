@@ -86,7 +86,7 @@ function vevent(n) {
     n.venue,
     n.tagline,
     n.host && `Hosted by ${n.host}.`,
-    ...(n.notes.length ? ["", "Notes:", ...n.notes.map((x) => `• ${x}`)] : []),
+    ...(n.notes.length ? ["", n.notesTitle || "Notes:", ...n.notes.map((x) => `• ${x}`)] : []),
     "",
     `${siteUrl}/#night-${n.id}`,
   ].filter((x) => x != null && x !== false).join("\n");
@@ -143,6 +143,7 @@ const nights = [...config.nights]
       address: raw.address || v.address,
       host: raw.host ?? v.host,
       tagline: raw.tagline ?? v.tagline,
+      notesTitle: raw.notesTitle ?? v.notesTitle,
       notes: [...(v.notes || []), ...(raw.notes || [])],
     };
     for (const k of ["date", "start", "title", "venue", "address"]) {

@@ -32,6 +32,7 @@ export default {
   // ── The places ────────────────────────────────────────────────────────────
   // name: shown as the night's title · place: shown next to the address
   // notes: special instructions, shown on every night at this place
+  // notesTitle: heading over the notes (defaults to "Host says…")
   venues: {
     elvira: {
       name: "Elvira's",
@@ -58,7 +59,8 @@ export default {
       place: "Regal Union Square",
       address: "850 Broadway, New York, NY 10003",
       tagline: "It's a movie theater. A real one.",
-      notes: ["I'll have your tickets.", "Please signal me if you can come!"],
+      notesTitle: "Vincent requests:",
+      notes: ["RSVP to him via Signal! He's already bought tickets for the group, so hit him up to claim a spot with everyone."],
     },
   },
 

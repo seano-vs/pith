@@ -100,7 +100,7 @@
       : n === nextNight ? `<span class="badge badge-next">NEXT UP</span>`
       : st === "past" ? `<span class="badge badge-past">R.I.P.</span>` : "";
     const notes = n.notes.length
-      ? `<div class="notes"><h4>Host says…</h4><ul>${n.notes.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "";
+      ? `<div class="notes"><h4>${esc(n.notesTitle || "Host says…")}</h4><ul>${n.notes.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "";
     return `
     <article class="night${st === "past" ? " is-past" : ""}" id="night-${esc(n.id)}">
       <span class="night-num">NIGHT ${pad(n.number)}</span>${badge}
