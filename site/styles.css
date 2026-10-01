@@ -249,14 +249,6 @@ button { font: inherit; color: inherit; }
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
-.h2-kicker {
-  display: block;
-  margin-bottom: 6px;
-  font: 400 19px/1 var(--f-vhs);
-  letter-spacing: 0.14em;
-  color: var(--pumpkin);
-}
-.h2-kicker::before { content: "▶ "; }
 
 /* ── calendar ────────────────────────────────────────────────────────────── */
 .cal {
