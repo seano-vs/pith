@@ -89,20 +89,11 @@ button { font: inherit; color: inherit; }
 .hero-stage { position: relative; }
 .s-bats-hero { width: 84px; left: -4px; bottom: -26px; transform: rotate(-7deg); border: 3px solid var(--ink); }
 .s-skull { width: 78px; top: -6px; right: 0; transform: rotate(7deg); border: 3px solid var(--ink); }
-.s-candles { width: 96px; top: -4px; right: 0; transform: rotate(-5deg); border: 3px solid var(--ink); }
 .s-rewind { width: 92px; top: -8px; right: 0; transform: rotate(6deg); border: 3px solid var(--ink); }
 .s-jason { width: 110px; bottom: 8px; right: 0; transform: rotate(-4deg); border: 3px solid var(--ink); }
 
 /* ── hero ────────────────────────────────────────────────────────────────── */
 .hero { position: relative; text-align: center; }
-.kicker {
-  display: inline-flex; align-items: center; gap: 8px;
-  font: 400 20px/1 var(--f-vhs);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 6px 0 14px;
-}
 .rec-dot {
   display: inline-block; width: 9px; height: 9px; border-radius: 50%;
   background: var(--blood);
@@ -547,7 +538,7 @@ a.fact .sub { color: var(--ink); text-decoration: underline; text-decoration-col
   .h2 { font-size: 56px; }
   .wrap { overflow-x: visible; }
   .s-bats-hero { width: 120px; left: -44px; }
-  .s-skull, .s-candles, .s-rewind { right: -40px; width: 110px; }
+  .s-skull, .s-rewind { right: -40px; width: 110px; }
 }
 
 /* ── motion off ──────────────────────────────────────────────────────────── */

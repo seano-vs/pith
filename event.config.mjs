@@ -19,8 +19,7 @@ export default {
   // subscriptions need this to be the real URL. A SITE_URL env var overrides it.
   siteUrl: "https://example.com/boo",
 
-  // Shows up in the preview card + footer.
-  hostedBy: "the coven",
+  // Text under the title in the preview card.
   previewDescription: "10 nights of horror movies across NYC. Just show up, bring snacks, scream responsibly.",
 
   // Scrolls across the caution-tape banner.

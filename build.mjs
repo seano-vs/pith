@@ -190,7 +190,6 @@ const icsAllUrl = `${siteUrl}/cal/all.ics`;
 const data = {
   title: config.title,
   subtitle: config.subtitle,
-  hostedBy: config.hostedBy,
   year: config.year,
   month: config.month,
   monthName,
@@ -217,7 +216,6 @@ const tokens = {
   PAGE_TITLE: esc(`${config.title} · ${monthName} ${config.year}`),
   DESCRIPTION: esc(config.previewDescription || config.subtitle),
   SUBTITLE: esc(config.subtitle),
-  HOSTED_BY: esc(config.hostedBy),
   MONTH_LABEL: esc(`${monthName} ${config.year}`),
   NIGHT_COUNT: String(nights.length),
   VENUE_COUNT: String(new Set(nights.map((n) => n.address)).size),
