@@ -136,7 +136,7 @@
   const shelf = $("#shelf");
   shelf.innerHTML = data.movies.map((m, i) => {
     const watchedOn = m.watched && nights.find((n) => n.id === m.watched);
-    const meta = [m.year, watchedOn ? `✓ watched night ${pad(watchedOn.number)}` : m.watched ? "✓ watched" : m.tag].filter(Boolean).join(" · ");
+    const meta = [m.year, watchedOn ? `✓ watched night ${pad(watchedOn.number)}` : m.watched ? "✓ watched" : m.booked ? `🎟️ ${m.booked}` : m.tag].filter(Boolean).join(" · ");
     const trailer = m.trailer
       ? `<a class="trailer" href="${esc(m.trailer)}" target="_blank" rel="noopener" aria-label="Watch the ${esc(m.title)} trailer">▶ Trailer</a>`
       : "";
@@ -149,7 +149,7 @@
   const result = $("#summon-result");
   summonBtn.addEventListener("click", () => {
     const spines = [...shelf.children];
-    const pool = spines.map((el, i) => i).filter((i) => !data.movies[i].watched);
+    const pool = spines.map((el, i) => i).filter((i) => !data.movies[i].watched && !data.movies[i].booked);
     if (!pool.length) { result.textContent = "You've watched them all. Seek help."; return; }
     const pick = pool[Math.floor(Math.random() * pool.length)];
     spines.forEach((el) => el.classList.remove("is-picked", "is-scanning"));

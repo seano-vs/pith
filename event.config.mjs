@@ -58,7 +58,7 @@ export default {
       name: "Regal Union Square",
       place: "Regal Union Square",
       address: "850 Broadway, New York, NY 10003",
-      tagline: "It's a movie theater. A real one.",
+      tagline: "🎟️ We're seeing Other Mommy in 4DX!",
       notesTitle: "Vincent requests:",
       notes: ["RSVP to him via Signal! He's already bought tickets for the group, so hit him up to claim a spot with everyone."],
     },
@@ -89,6 +89,8 @@ export default {
   // Each night we pull one at random. Add `watched: "oct-04"` (a night's date as
   // oct-DD) to cross a movie off after that night.
   movies: [
+    // `booked`: already picked for a night — shown with a ticket and left out of the hat draw.
+    { title: "Other Mommy", year: 2026, booked: "Oct 12 · 4DX", trailer: "https://www.youtube.com/watch?v=bEpTgowZ1dI" },
     { title: "Come to Daddy", year: 2019, tag: "wtf", trailer: "https://www.youtube.com/watch?v=3D05YjZmVSI" },
     { title: "Companion", year: 2025, tag: "sci-fi", trailer: "https://www.youtube.com/watch?v=Qr_kX0D3DNA" },
     { title: "Heretic", year: 2024, tag: "psych", trailer: "https://www.youtube.com/watch?v=O9i2vmFhSSY" },
