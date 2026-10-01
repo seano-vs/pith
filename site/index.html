@@ -43,6 +43,7 @@
   <main class="wrap">
     <!-- ── HERO ─────────────────────────────────────────── -->
     <header class="hero">
+      <div class="kicker"><span class="rec-dot"></span> %HOSTED_BY% presents</div>
 
       <div class="hero-stage">
       <figure class="vhs hero-media">
@@ -58,7 +59,11 @@
       <h1 class="title" data-text="%TITLE%"><span class="fit">%TITLE%</span></h1>
       <p class="subtitle">%SUBTITLE%</p>
 
-      <a class="fyi" href="#pool"><b>🎩 FYI</b> Movie of the night will be chosen by hat draw unless otherwise specified.<span class="fyi-link">See the movie pool ↓</span></a>
+      <ul class="chips">
+        <li>🩸 %NIGHT_COUNT% nights</li>
+        <li>🏚️ %NIGHT_COUNT% haunts</li>
+        <li>🎟️ no RSVP</li>
+      </ul>
 
       <p class="countdown" id="countdown" hidden></p>
 
@@ -73,23 +78,25 @@
     <!-- ── CALENDAR ─────────────────────────────────────── -->
     <section class="block" id="calendar" aria-labelledby="cal-h">
       <img class="sticker s-skull" src="assets/gifs/skull.gif" alt="" aria-hidden="true" loading="lazy">
-      <h2 class="h2" id="cal-h">%MONTH_LABEL%</h2>
+      <h2 class="h2" id="cal-h"><span class="h2-kicker">The month</span>%MONTH_LABEL%</h2>
       <div class="cal" id="cal-grid" role="grid"></div>
       <p class="cal-legend"><span class="legend-swatch"></span> tap a haunted night to jump to it</p>
     </section>
 
     <!-- ── NIGHTS ───────────────────────────────────────── -->
-    <section class="block" id="nights" aria-label="The nights">
+    <section class="block" id="nights" aria-labelledby="nights-h">
+      <img class="sticker s-candles" src="assets/gifs/candles.webp" alt="" aria-hidden="true" loading="lazy">
+      <h2 class="h2" id="nights-h"><span class="h2-kicker">The lineup</span>The Nights</h2>
       <div id="night-list" class="night-list"></div>
     </section>
 
     <!-- ── MOVIE POOL ───────────────────────────────────── -->
     <section class="block" id="pool" aria-labelledby="pool-h">
       <img class="sticker s-rewind" src="assets/gifs/rewind.webp" alt="" aria-hidden="true" loading="lazy">
-      <h2 class="h2" id="pool-h">The Movie Pool</h2>
-      <p class="pool-sub">Each night we pull one at random. More getting added.</p>
+      <h2 class="h2" id="pool-h"><span class="h2-kicker">Now renting</span>The Movie Pool</h2>
+      <p class="pool-sub">What we're picking from. Lobby your host.</p>
       <figure class="vhs pool-media">
-        <img src="assets/gifs/static.webp" alt="TV static" loading="lazy" width="154" height="200">
+        <img src="assets/gifs/ghostface-crowd.webp" alt="A crowd of Ghostfaces" loading="lazy" width="200" height="239">
       </figure>
       <button class="btn btn-bile" type="button" id="summon">🔮 Summon a random pick</button>
       <p class="summon-result" id="summon-result" aria-live="polite"></p>
@@ -102,6 +109,13 @@
         <img src="assets/gifs/trike.webp" alt="Danny riding his trike down the Overlook hallway" loading="lazy" width="400" height="226">
       </figure>
       <p class="foot-big">See you in the dark.</p>
+      <div class="cta">
+        <button class="btn btn-blood" type="button" data-cal="all">🗓️ Add all nights</button>
+      </div>
+      <p class="foot-small">
+        Times are %MONTH_LABEL% in <span id="tzname"></span>. No RSVP, no texts, no tracking — just show up.<br>
+        Brought to you by %HOSTED_BY%.
+      </p>
       <img class="sticker s-jason" src="assets/gifs/jason.webp" alt="" aria-hidden="true" loading="lazy">
     </footer>
   </main>
