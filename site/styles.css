@@ -478,10 +478,9 @@ a.fact .sub { color: var(--ink); text-decoration: underline; text-decoration-col
 .tape-spine.is-scanning { box-shadow: 0 0 0 2px var(--ink); }
 
 /* ── footer ──────────────────────────────────────────────────────────────── */
-.foot { position: relative; margin-top: 64px; text-align: center; }
+.foot { position: relative; margin-top: 64px; padding-bottom: 96px; text-align: center; }
 .foot-media { aspect-ratio: 16 / 9; transform: rotate(1deg); }
 .foot-big { margin: 22px 0 0; font: 400 46px/0.95 var(--f-head); text-transform: uppercase; color: var(--blood); text-shadow: 0 0 16px rgba(224, 22, 43, 0.5); }
-.foot-small { margin: 22px 0 40px; padding-right: 20px; color: var(--muted); font-size: 14px; }
 
 /* ── bottom sheet ────────────────────────────────────────────────────────── */
 .sheet {

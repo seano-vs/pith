@@ -51,7 +51,6 @@
   const run = words.map((w) => `<span>${esc(w)}</span><span class="dot">✦</span>`).join("");
   $("#marquee").innerHTML = run.repeat(4) + run.repeat(4); // two identical halves → seamless loop
 
-  $("#tzname").textContent = data.timezone.replace(/_/g, " ");
 
   // ── countdown ───────────────────────────────────────────────────────────
   const cd = $("#countdown");
