@@ -23,7 +23,7 @@ export default {
   previewDescription: "10 nights of horror movies across NYC. Just show up, bring snacks, scream responsibly.",
 
   // Scrolls across the caution-tape banner.
-  marquee: ["JUST SHOW UP", "BRING SNACKS", "SCREAMS WELCOME", "BYOB(lanket)", "MAMDANI APPROVED", "DON'T SPLIT UP"],
+  marquee: ["JUST SHOW UP", "BRING SNACKS", "GUARANTEED TO SCARE CARRIE", "BYOB(lanket)", "MAMDANI APPROVED", "DON'T SPLIT UP"],
 
   // How long a night lasts in calendar invites when it has no `end`.
   defaultHours: 3,
