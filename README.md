@@ -1,4 +1,4 @@
-# SHOCKTOBER 🔪
+# SPOOKTOBER 🔪
 
 A static, Partiful-style event page for a multi-night, multi-location horror movie month.
 No RSVPs, no accounts, no tracking. Just a link you text to people.

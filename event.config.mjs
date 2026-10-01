@@ -5,7 +5,7 @@
 
 export default {
   // Big title on the page + the text-message preview card.
-  title: "SHOCKTOBER",
+  title: "SPOOKTOBER",
   subtitle: "fear is the best spice",
   year: 2026,
   month: 10, // October. The calendar grid renders this month.
