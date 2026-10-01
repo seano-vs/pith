@@ -199,7 +199,6 @@ const data = {
   nights,
   movies: config.movies || [],
   allIcs: "cal/all.ics",
-  webcal: icsAllUrl.replace(/^https?:/, "webcal:"),
   gcalSubscribe: `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(icsAllUrl.replace(/^https?:/, "webcal:"))}`,
 };
 

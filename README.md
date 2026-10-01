@@ -5,7 +5,7 @@ No RSVPs, no accounts, no tracking. Just a link you text to people.
 
 - October month grid; tapping a haunted night jumps to its card
 - One card per night with time, host, a tap-for-directions address (Apple Maps on iPhone, Google Maps elsewhere), copy-address, and the host's special instructions
-- Add to calendar per night (Apple/.ics, Google, Outlook) or all at once (.ics, auto-updating subscription, Google subscribe)
+- Add to calendar per night (Apple/.ics, Google, Outlook) or all at once (.ics, Google subscribe)
 - The movie pool as a VHS rental shelf, with a random-pick button
 - iMessage/WhatsApp/Discord preview card (`og:image` 1200×630)
 - Built for phones first. GIFs are animated WebP, so they stay light on cellular data

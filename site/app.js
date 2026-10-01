@@ -190,7 +190,6 @@
       $("#sheet-title").textContent = `Add ${data.title} to your calendar`;
       $("#sheet-options").innerHTML = [
         opt(data.allIcs, "🍎", "Apple Calendar / iPhone", "Adds every night at once. Tap “Add All” on the next screen."),
-        opt(data.webcal, "🔄", "Subscribe (auto-updates)", "If a night moves, your calendar updates itself. iPhone, Mac & Outlook."),
         opt(data.gcalSubscribe, "🟦", "Google Calendar", "Subscribes to the whole lineup. Best done on a computer.", true),
         opt(data.allIcs, "⬇️", "Download .ics", "Outlook, Proton, Fantastical, anything else."),
       ].join("");
