@@ -452,7 +452,7 @@ a.fact .sub { color: var(--ink); text-decoration: underline; text-decoration-col
   color: #111;
   min-width: 0;
 }
-.tape-spine .mt { font: 400 23px/1 var(--f-head); letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tape-spine .mt { font: 400 23px/1 var(--f-head); letter-spacing: 0.03em; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; }
 .tape-spine .yr { font: 400 16px/1 var(--f-vhs); letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.75; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tape-spine .trailer {
   grid-column: 3; align-self: center;
