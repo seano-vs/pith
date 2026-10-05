@@ -99,6 +99,6 @@ export default {
     { title: "The Thing", year: 1982, tag: "creature", trailer: "https://www.youtube.com/watch?v=ySvzHdtCiWE" },
     { title: "Gonjiam: Haunted Asylum", year: 2018, tag: "found footage", trailer: "https://www.youtube.com/watch?v=KKGJTgnkQA8" },
     { title: "The Wailing", year: 2016, tag: "folk", trailer: "https://www.youtube.com/watch?v=g01g2ZhaWi4" },
-    { title: "Backrooms", year: 2026, tag: "liminal", trailer: "https://www.youtube.com/watch?v=0HjdiohVOik" },
+    { title: "Backrooms", year: 2026, tag: "liminal", watched: "oct-04", trailer: "https://www.youtube.com/watch?v=0HjdiohVOik" },
   ],
 };

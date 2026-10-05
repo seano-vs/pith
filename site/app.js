@@ -123,6 +123,7 @@
         <dl class="facts">
           <div class="fact"><span class="ico">🕯️</span><div><dt>When</dt><dd>${info.dowLong}, ${info.mon} ${info.day}<span class="sub">${esc(n.timeLabel)}</span></dd></div></div>
           ${n.host ? `<div class="fact"><span class="ico">🧛</span><div><dt>Host</dt><dd>${esc(n.host)}</dd></div></div>` : ""}
+          ${data.movies.filter((m) => m.watched === n.id).map((m) => `<div class="fact"><span class="ico">🎬</span><div><dt>Watched</dt><dd>${esc(m.title)}${m.year ? ` <span class="yr-inline">(${esc(m.year)})</span>` : ""}${m.trailer ? `<a class="sub" href="${esc(m.trailer)}" target="_blank" rel="noopener">▶ Trailer</a>` : ""}</dd></div></div>`).join("")}
           <a class="fact" href="${esc(maps)}" target="_blank" rel="noopener"><span class="ico">📍</span><div><dt>Where · tap for directions</dt><dd>${esc(n.venue)}<span class="sub">${esc(n.address)}</span></dd></div></a>
         </dl>
         ${notes}
@@ -136,7 +137,7 @@
   const shelf = $("#shelf");
   shelf.innerHTML = data.movies.map((m, i) => {
     const watchedOn = m.watched && nights.find((n) => n.id === m.watched);
-    const meta = [m.year, watchedOn ? `✓ watched night ${pad(watchedOn.number)}` : m.watched ? "✓ watched" : m.booked ? `🎟️ ${m.booked}` : m.tag].filter(Boolean).join(" · ");
+    const meta = [m.year, watchedOn ? `✓ watched ${dayInfo(watchedOn.date).mon} ${dayInfo(watchedOn.date).day}` : m.watched ? "✓ watched" : m.booked ? `🎟️ ${m.booked}` : m.tag].filter(Boolean).join(" · ");
     const trailer = m.trailer
       ? `<a class="trailer" href="${esc(m.trailer)}" target="_blank" rel="noopener" aria-label="Watch the ${esc(m.title)} trailer">▶ Trailer</a>`
       : "";

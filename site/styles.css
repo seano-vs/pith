@@ -386,10 +386,11 @@ button { font: inherit; color: inherit; }
 .fact .ico { font-size: 19px; line-height: 1.3; text-align: center; }
 .fact dt { font: 400 15px/1 var(--f-vhs); letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
 .fact dd { margin: 0; font-weight: 500; line-height: 1.35; }
+.yr-inline { color: var(--muted); font-weight: 400; }
 .fact .sub { display: block; color: var(--muted); font-weight: 400; font-size: 15px; }
 a.fact { transition: background 0.15s; -webkit-tap-highlight-color: transparent; }
 a.fact:active { background: rgba(224, 22, 43, 0.18); }
-a.fact .sub { color: var(--ink); text-decoration: underline; text-decoration-color: var(--blood); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a.fact .sub, .fact a.sub { color: var(--ink); text-decoration: underline; text-decoration-color: var(--blood); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 
 .notes {
   margin: 14px 0 0;
