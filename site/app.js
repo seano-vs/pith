@@ -95,13 +95,11 @@
     const st = status(n);
     const maps = mapsUrl(n);
     const badge = st === "now" ? `<span class="badge badge-now">HAPPENING NOW</span>`
-      : n === nextNight ? `<span class="badge badge-next">NEXT UP</span>`
-      : st === "past" ? `<span class="badge badge-past">R.I.P.</span>` : "";
+      : n === nextNight ? `<span class="badge badge-next">NEXT UP</span>` : "";
     const notes = n.notes.length
       ? `<div class="notes${!(n.notesTitle ?? "Host says…") && n.notes.length === 1 ? " is-plain" : ""}">${(n.notesTitle ?? "Host says…") ? `<h4>${esc(n.notesTitle ?? "Host says…")}</h4>` : ""}<ul>${n.notes.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "";
-    return `
-    <article class="night${st === "past" ? " is-past" : ""}" id="night-${esc(n.id)}">
-      <span class="night-num">NIGHT ${pad(n.number)}</span>${badge}
+    const watched = data.movies.filter((m) => m.watched === n.id);
+    const content = `
       <div class="night-media">
       <figure class="vhs">
         <img src="${esc(gifSrc(n.gif))}" alt="" loading="lazy">
@@ -123,14 +121,40 @@
         <dl class="facts">
           <div class="fact"><span class="ico">🕯️</span><div><dt>When</dt><dd>${info.dowLong}, ${info.mon} ${info.day}<span class="sub">${esc(n.timeLabel)}</span></dd></div></div>
           ${n.host ? `<div class="fact"><span class="ico">🧛</span><div><dt>Host</dt><dd>${esc(n.host)}</dd></div></div>` : ""}
-          ${data.movies.filter((m) => m.watched === n.id).map((m) => `<div class="fact"><span class="ico">🎬</span><div><dt>Watched</dt><dd>${esc(m.title)}${m.year ? ` <span class="yr-inline">(${esc(m.year)})</span>` : ""}${m.trailer ? `<a class="sub" href="${esc(m.trailer)}" target="_blank" rel="noopener">▶ Trailer</a>` : ""}</dd></div></div>`).join("")}
+          ${watched.map((m) => `<div class="fact"><span class="ico">🎬</span><div><dt>Watched</dt><dd>${esc(m.title)}${m.year ? ` <span class="yr-inline">(${esc(m.year)})</span>` : ""}${m.trailer ? `<a class="sub" href="${esc(m.trailer)}" target="_blank" rel="noopener">▶ Trailer</a>` : ""}</dd></div></div>`).join("")}
           <a class="fact" href="${esc(maps)}" target="_blank" rel="noopener"><span class="ico">📍</span><div><dt>Where · tap for directions</dt><dd>${esc(n.venue)}<span class="sub">${esc(n.address)}</span></dd></div></a>
         </dl>
         ${notes}
         <p class="alt-maps"><button type="button" data-copy="${esc(n.address)}">Copy address</button></p>
-      </div>
+      </div>`;
+    // Past nights collapse to a one-line summary; tap to expand the full card.
+    if (st === "past") {
+      return `
+    <details class="night is-past" id="night-${esc(n.id)}">
+      <summary class="night-summary">
+        <img class="ns-thumb" src="${esc(gifSrc(n.gif))}" alt="" loading="lazy">
+        <span class="ns-text">
+          <span class="ns-kicker">Night ${pad(n.number)} · ${info.dow} ${info.mon} ${info.day} · R.I.P.</span>
+          <span class="ns-title">${esc(n.title)}</span>
+          ${watched.length ? `<span class="ns-movie">🎬 ${watched.map((m) => esc(m.title)).join(", ")}</span>` : ""}
+        </span>
+        <span class="ns-chev" aria-hidden="true">▾</span>
+      </summary>${content}
+    </details>`;
+    }
+    return `
+    <article class="night" id="night-${esc(n.id)}">
+      <span class="night-num">NIGHT ${pad(n.number)}</span>${badge}${content}
     </article>`;
   }).join("");
+
+  // Jumping to a collapsed past night (e.g. from the calendar) opens it.
+  const openTarget = () => {
+    const el = location.hash && document.getElementById(location.hash.slice(1));
+    if (el && el.tagName === "DETAILS") el.open = true;
+  };
+  addEventListener("hashchange", openTarget);
+  openTarget();
 
   // ── movie shelf ─────────────────────────────────────────────────────────
   const labels = ["#e0162b", "#ff6a13", "#ffd23f", "#c6ff3a", "#3fd7ff", "#b58cff", "#f3eadb", "#ff4fa3"];

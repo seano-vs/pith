@@ -306,8 +306,8 @@ button { font: inherit; color: inherit; }
   position: absolute; z-index: 1; right: 4px; bottom: 3px;
   font-size: 12px; line-height: 1;
 }
-.cal-day.has-event.is-past { box-shadow: 0 0 0 2px rgba(224, 22, 43, 0.35); }
-.cal-day.has-event.is-past img { opacity: 0.25; filter: grayscale(1); }
+.cal-day.has-event.is-past { filter: grayscale(1); box-shadow: 0 0 0 2px rgba(243, 234, 219, 0.22); }
+.cal-day.has-event.is-past img { opacity: 0.3; }
 .cal-day.has-event:active { transform: scale(0.95); }
 .cal-legend { margin: 10px 2px 0; font: 400 17px/1.2 var(--f-vhs); color: var(--muted); display: flex; align-items: center; gap: 8px; }
 .legend-swatch { width: 14px; height: 14px; border-radius: 4px; background: #000; box-shadow: 0 0 0 2px var(--blood), 0 0 8px var(--blood); flex: none; }
@@ -355,7 +355,6 @@ button { font: inherit; color: inherit; }
 }
 .badge-next { background: var(--bile); color: #121a00; animation: pulse 1.6s ease-in-out infinite; }
 .badge-now { background: var(--blood); color: #fff; animation: pulse 1s ease-in-out infinite; }
-.badge-past { background: #2a2224; color: var(--muted); }
 @keyframes pulse { 50% { transform: rotate(3deg) scale(1.08); } }
 
 .night-body { padding: 16px 18px 20px; }
@@ -421,8 +420,28 @@ a.fact .sub, .fact a.sub { color: var(--ink); text-decoration: underline; text-d
 .alt-maps { margin: 18px 0 0; text-align: center; font: 400 17px/1 var(--f-vhs); color: var(--muted); letter-spacing: 0.04em; }
 .alt-maps button { background: none; border: 0; padding: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; }
 
-.night.is-past .vhs img { filter: grayscale(1) contrast(0.9); opacity: 0.5; }
-.night.is-past .night-title { text-decoration: line-through; text-decoration-color: var(--blood); text-decoration-thickness: 3px; }
+/* Past nights: black and white, collapsed to a one-line summary. */
+.night.is-past { filter: grayscale(1); background: var(--bg-2); box-shadow: none; }
+.night.is-past + .night.is-past { margin-top: -26px; }
+.night.is-past .vhs img { opacity: 0.6; }
+.night.is-past .night-title { text-decoration: line-through; text-decoration-thickness: 3px; }
+.night-summary {
+  display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center;
+  padding: 10px 14px 10px 10px;
+  list-style: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.night-summary::-webkit-details-marker { display: none; }
+.night.is-past[open] .night-summary { border-bottom: 1px solid var(--line); }
+.ns-thumb { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; opacity: 0.55; }
+.ns-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.ns-kicker { font: 400 15px/1 var(--f-vhs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.ns-title { font: 400 24px/1 var(--f-head); letter-spacing: 0.02em; text-transform: uppercase; color: var(--muted); text-decoration: line-through; text-decoration-thickness: 2px; }
+.ns-movie { font-size: 14px; color: var(--ink); opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ns-chev { font-size: 18px; color: var(--muted); transition: transform 0.2s; }
+.night.is-past[open] .ns-chev { transform: rotate(180deg); }
+.night.is-past[open] .vhs { border-radius: 0; }
 
 /* ── movie pool (VHS shelf) ──────────────────────────────────────────────── */
 .pool-sub { margin: -8px 0 16px; color: var(--muted); }
