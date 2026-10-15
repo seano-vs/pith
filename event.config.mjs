@@ -95,7 +95,7 @@ export default {
     { title: "Companion", year: 2025, tag: "sci-fi", trailer: "https://www.youtube.com/watch?v=Qr_kX0D3DNA" },
     { title: "Heretic", year: 2024, tag: "psych", trailer: "https://www.youtube.com/watch?v=O9i2vmFhSSY" },
     { title: "Let the Right One In", year: 2008, tag: "vampire", watched: "oct-07", trailer: "https://www.youtube.com/watch?v=ICp4g9p_rgo" },
-    { title: "Smile 2", year: 2024, tag: "curse", trailer: "https://www.youtube.com/watch?v=0HY6QFlBzUY" },
+    { title: "Smile 2", year: 2024, tag: "curse", watched: "oct-14", trailer: "https://www.youtube.com/watch?v=0HY6QFlBzUY" },
     { title: "The Thing", year: 1982, tag: "creature", trailer: "https://www.youtube.com/watch?v=ySvzHdtCiWE" },
     { title: "Gonjiam: Haunted Asylum", year: 2018, tag: "found footage", watched: "oct-05", trailer: "https://www.youtube.com/watch?v=KKGJTgnkQA8" },
     { title: "The Wailing", year: 2016, tag: "folk", trailer: "https://www.youtube.com/watch?v=g01g2ZhaWi4" },
