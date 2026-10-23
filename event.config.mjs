@@ -92,11 +92,11 @@ export default {
     // `booked`: already picked for a night — shown with a ticket and left out of the hat draw.
     { title: "Other Mommy", year: 2026, watched: "oct-12", trailer: "https://www.youtube.com/watch?v=bEpTgowZ1dI" },
     { title: "Come to Daddy", year: 2019, tag: "wtf", watched: "oct-17", trailer: "https://www.youtube.com/watch?v=3D05YjZmVSI" },
-    { title: "Companion", year: 2025, tag: "sci-fi", trailer: "https://www.youtube.com/watch?v=Qr_kX0D3DNA" },
+    { title: "Companion", year: 2025, tag: "sci-fi", watched: "oct-20", trailer: "https://www.youtube.com/watch?v=Qr_kX0D3DNA" },
     { title: "Heretic", year: 2024, tag: "psych", trailer: "https://www.youtube.com/watch?v=O9i2vmFhSSY" },
     { title: "Let the Right One In", year: 2008, tag: "vampire", watched: "oct-07", trailer: "https://www.youtube.com/watch?v=ICp4g9p_rgo" },
     { title: "Smile 2", year: 2024, tag: "curse", watched: "oct-14", trailer: "https://www.youtube.com/watch?v=0HY6QFlBzUY" },
-    { title: "The Thing", year: 1982, tag: "creature", trailer: "https://www.youtube.com/watch?v=ySvzHdtCiWE" },
+    { title: "The Thing", year: 1982, tag: "creature", watched: "oct-18", trailer: "https://www.youtube.com/watch?v=ySvzHdtCiWE" },
     { title: "Gonjiam: Haunted Asylum", year: 2018, tag: "found footage", watched: "oct-05", trailer: "https://www.youtube.com/watch?v=KKGJTgnkQA8" },
     { title: "The Wailing", year: 2016, tag: "folk", trailer: "https://www.youtube.com/watch?v=g01g2ZhaWi4" },
     { title: "Backrooms", year: 2026, tag: "liminal", watched: "oct-04", trailer: "https://www.youtube.com/watch?v=0HjdiohVOik" },

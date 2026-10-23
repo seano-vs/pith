@@ -161,7 +161,9 @@
   const shelf = $("#shelf");
   shelf.innerHTML = data.movies.map((m, i) => {
     const watchedOn = m.watched && nights.find((n) => n.id === m.watched);
-    const meta = [m.year, watchedOn ? `✓ watched ${dayInfo(watchedOn.date).mon} ${dayInfo(watchedOn.date).day}` : m.watched ? "✓ watched" : m.booked ? `🎟️ ${m.booked}` : m.tag].filter(Boolean).join(" · ");
+    const meta = [m.year, watchedOn ? `✓ watched ${dayInfo(watchedOn.date).mon} ${dayInfo(watchedOn.date).day}`
+      : /^[a-z]{3}-\d{2}$/.test(m.watched || "") ? `✓ watched ${m.watched[0].toUpperCase()}${m.watched.slice(1, 3)} ${Number(m.watched.slice(4))}` // off-schedule night
+      : m.watched ? "✓ watched" : m.booked ? `🎟️ ${m.booked}` : m.tag].filter(Boolean).join(" · ");
     const trailer = m.trailer
       ? `<a class="trailer" href="${esc(m.trailer)}" target="_blank" rel="noopener" aria-label="Watch the ${esc(m.title)} trailer">▶ Trailer</a>`
       : "";
