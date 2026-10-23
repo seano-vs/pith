@@ -92,7 +92,7 @@ export default {
     // `booked`: already picked for a night — shown with a ticket and left out of the hat draw.
     { title: "Other Mommy", year: 2026, watched: "oct-12", trailer: "https://www.youtube.com/watch?v=bEpTgowZ1dI" },
     { title: "Come to Daddy", year: 2019, tag: "wtf", watched: "oct-17", trailer: "https://www.youtube.com/watch?v=3D05YjZmVSI" },
-    { title: "Companion", year: 2025, tag: "sci-fi", watched: "oct-20", trailer: "https://www.youtube.com/watch?v=Qr_kX0D3DNA" },
+    { title: "Companion", year: 2025, tag: "sci-fi", watched: "oct-21", trailer: "https://www.youtube.com/watch?v=Qr_kX0D3DNA" },
     { title: "Heretic", year: 2024, tag: "psych", trailer: "https://www.youtube.com/watch?v=O9i2vmFhSSY" },
     { title: "Let the Right One In", year: 2008, tag: "vampire", watched: "oct-07", trailer: "https://www.youtube.com/watch?v=ICp4g9p_rgo" },
     { title: "Smile 2", year: 2024, tag: "curse", watched: "oct-14", trailer: "https://www.youtube.com/watch?v=0HY6QFlBzUY" },
