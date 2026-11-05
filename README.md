@@ -1,73 +1,109 @@
 # SPOOKTOBER 🔪
 
-A static, Partiful-style event page for a multi-night, multi-location horror movie month.
-No RSVPs, no accounts, no tracking. Just a link you text to people.
+*fear is the best spice*
 
-- October month grid; tapping a haunted night jumps to its card
-- One card per night with time, host, a tap-for-directions address (Apple Maps on iPhone, Google Maps elsewhere), copy-address, and the host's special instructions
-- Add all nights to your calendar at once (Apple/.ics, Google, or a .ics download)
-- The movie pool as a VHS rental shelf, with a random-pick button
-- iMessage/WhatsApp/Discord preview card (`og:image` 1200×630)
-- Built for phones first. GIFs are animated WebP, so they stay light on cellular data
+A one-page invite for a month of horror movie nights: ten nights, four apartments plus a movie theater, one link texted to friends. It ran through October 2026 and is now offline. This repo is the whole thing, with the real names and addresses swapped for horror-icon stand-ins (Elvira, Vincent, Boris).
 
-## Edit the event
+<p align="center">
+  <img src="docs/screenshots/1-hero.jpg" width="260" alt="Hero: VHS-style Shining twins GIF, dripping SPOOKTOBER title, countdown to the next night">
+  <img src="docs/screenshots/3-nights.jpg" width="260" alt="Past nights collapsed into grey rows showing the movie watched, next night in full color">
+  <img src="docs/screenshots/5-movie-pool.jpg" width="260" alt="Movie pool as a VHS rental shelf with trailer buttons and watched movies crossed off">
+</p>
 
-Everything lives in **`event.config.mjs`**:
+## Why
 
-- `venues`: each place's name, address, host and standing notes (e.g. "bring your own chairs").
-- `nights`: one line per night, a date, a start time, which venue (`at`) and a GIF.
-  A night can override `title`, `tagline`, `notes` or add an `end` time. Without an `end`, the page
-  shows only the start time and calendar invites last `defaultHours`.
-- `movies`: the pool, each with a YouTube `trailer` link. To cross one off, add `watched: "oct-04"`.
-- GIFs go in `site/assets/gifs/`. A night's `gif` can also be any `https://` URL.
+[Partiful](https://partiful.com) is great for one party. This wasn't one party. It was a horror movie night roughly twice a week for a month, rotating between friends' apartments, with one night at a theater. No event app handled "one invite, many dates, many places".
 
-Times are wall-clock in `timezone` (New York).
+What was actually needed was smaller than an event app. No RSVPs, no accounts, no notifications. Just:
 
-## Run locally
+- an October calendar showing which nights are on,
+- each night's time, host, a tap-for-directions address and any house rules ("bring your own chair"),
+- a way to put the nights in your calendar,
+- the pool of movies, since each night's movie was pulled from a hat,
+- a nice preview card when the link gets texted,
+- and it had to look good on a phone, with GIFs everywhere.
+
+## How it was made
+
+The site was built and run entirely from a phone, in conversation with [Claude Code](https://claude.com/claude-code) (on the web, through the Claude app). There was no laptop in the loop.
+
+```
+ phone (Claude app)          Claude Code (cloud container)          GitHub            Cloudflare
+ ─────────────────           ─────────────────────────────          ──────            ──────────
+ "we watched Smile 2   ──▶   edit event.config.mjs            ──▶   push to main ──▶  Workers Builds:
+  last night"                build + headless-Chrome check                           node build.mjs
+                             at iPhone size                                           wrangler deploy
+                                                                                          │
+ text the link to friends ◀──────────────────── live at <domain>/boo in ~1 minute ◀───┘
+```
+
+- **The first version** came from a single long message describing what was wanted. Claude Code built a static site, picked and downloaded the GIFs, generated the preview-card image, and checked the layout in a headless Chromium at iPhone size before sending screenshots back to the phone.
+- **Every change after that** was a chat message: "change the Monday times", "make Boris's GIF a haunted bookcase", "we watched The Thing on the 18th". Claude edited the config or code, re-checked it in the browser, pushed to `main`, and confirmed on the live URL once Cloudflare had redeployed.
+- **Hosting moved twice.** GitHub Pages was the first plan, but Pages needs a paid plan for a private repo. Cloudflare Workers static assets worked with the repo kept private, connected through Cloudflare's GitHub integration. A Worker route serves only one path on an existing domain (`<domain>/boo`), and the rest of the domain stays on whatever already serves it.
+- **The page got simpler over the month.** Feedback from the phone mostly removed things: per-night buttons, section labels, the footer fine print, a calendar "subscribe" link that silently does nothing on Android. It also added a few: a birthday cake for Boris, a hat-draw note, past nights collapsing into grey rows so the next night is always near the top.
+
+The commit history is the real build log, from the first placeholder version through each change made from the phone (with names and addresses scrubbed).
+
+## What's on the page
+
+<p align="center">
+  <img src="docs/screenshots/2-calendar.jpg" width="260" alt="October calendar with event days glowing red, past days grey">
+  <img src="docs/screenshots/4-next-night.jpg" width="260" alt="A night card with date, host, movie watched, address and a taped-on host note">
+  <img src="docs/screenshots/6-add-to-calendar.jpg" width="260" alt="Add-to-calendar bottom sheet with Apple, Google and .ics options">
+</p>
+
+- **October calendar.** Event days glow red with that night's GIF. Tap one to jump to its card. Past days go grey.
+- **Night cards.** Time with timezone, host, the movie watched, and an address that opens Apple Maps on iPhone and Google Maps elsewhere. Host notes sit on a taped index card. The next night gets a "NEXT UP" badge and the hero shows a countdown.
+- **Past nights** collapse to a one-line grey row (date, place, movie). Tap to expand the full card in black and white.
+- **Add all nights to your calendar.** Real `.ics` files served as `text/calendar`, so iPhones offer "Add All". Google Calendar gets a subscribe link. Times are converted to UTC from New York time at build time.
+- **Movie pool** as a VHS rental shelf. Each movie has a trailer button (official trailers only). Watched movies are crossed off with the date, and "Summon a random pick" only draws from the rest.
+- **Preview card.** Open Graph tags plus a 1200×630 image, so iMessage, WhatsApp and Discord show the title and dates when the link is texted.
+
+<p align="center">
+  <img src="docs/screenshots/0-preview-card.jpg" width="600" alt="Link preview card: SPOOKTOBER over the Shining twins with all ten dates">
+</p>
+
+## How it works
+
+It's a static site with a tiny zero-dependency build step:
+
+| File | What it does |
+|---|---|
+| `event.config.mjs` | **Everything you edit.** Title, timezone, venues, nights, movie pool. |
+| `build.mjs` | Fills the HTML template, inlines the data as JSON, writes one `.ics` per night plus `all.ics`, and outputs to `dist/<path>/`. Plain Node, no packages. |
+| `site/` | The page: `index.html`, `styles.css`, `app.js`, self-hosted fonts, GIFs as animated WebP (~2 MB total, lazy-loaded). |
+| `site/_headers` | Makes Cloudflare serve `.ics` as `text/calendar` (iPhones need this for "Add to Calendar"). |
+| `wrangler.jsonc` | Cloudflare Workers static-assets config, routed to one path on a domain. |
+| `scripts/og.mjs` | Renders the preview-card image and icons from `site/og.html` with Playwright. |
+
+The build step exists because some things can't be done in browser JavaScript. Link-preview crawlers never run JS, so the preview tags need absolute URLs in the HTML. iPhones only reliably add events from real `.ics` files. Calendar times are fixed to UTC once, so nobody ends up an hour off.
+
+### Edit the event
+
+In `event.config.mjs`:
+
+- `venues`: each place's name, address, host and standing notes.
+- `nights`: one line per night: date, start time, venue (`at`) and a GIF. Optional `end`, `tagline`, `notes`, `sticker` (a GIF stuck on the card's corner) and `calIcon` (calendar emoji, default 🔪).
+- `movies`: title, year, tag and a YouTube `trailer`. Add `watched: "oct-04"` to cross one off, or `booked: "Oct 12 · 4DX"` to keep it out of the hat draw.
+
+### Run locally
 
 ```sh
-npm run dev     # builds to dist/ and serves http://localhost:8080/boo/
+npm run dev     # builds and serves http://localhost:8080/boo/
 ```
 
-No dependencies. Any Node 18+ works; 26 is pinned for Cloudflare and CI.
+Any Node 18+ works. No `npm install` needed.
 
-## Deploy
+### Deploy on Cloudflare
 
-The site is just static files: `node build.mjs` writes everything to `dist/`. Host that folder anywhere.
+1. Set `siteUrl` in `event.config.mjs` and the `routes` in `wrangler.jsonc` to your domain and path.
+2. In the Cloudflare dashboard: **Workers & Pages → Create → Import a repository**, then pick this repo. Leave the root directory empty.
+3. Build command `node build.mjs`, deploy command `npx wrangler deploy`.
 
-### Cloudflare (recommended)
+Every push to `main` redeploys. Any other static host works too: serve `dist/`, and make sure `.ics` is served as `text/calendar`.
 
-The site is served at **https://example.com/boo**. `wrangler.jsonc` routes only `example.com/boo`
-and `example.com/boo/*` to this Worker, so the rest of example.com is untouched.
+## Credits
 
-1. In the Cloudflare dashboard go to **Workers & Pages → Create → Import a repository**
-   and pick this repo. You'll need to authorize Cloudflare's GitHub app for it.
-2. Build command: `node build.mjs`. Deploy command: `npx wrangler deploy`.
-3. Every push to `main` rebuilds and redeploys.
-
-To move it, change `siteUrl` in `event.config.mjs` and the `routes` in `wrangler.jsonc` together.
-A path in `siteUrl` makes the build output go to `dist/<path>/`, and `/boo` redirects to `/boo/`.
-
-`site/_headers` makes Cloudflare serve `.ics` as `text/calendar`. iPhones need that to show
-"Add to Calendar". The build prefixes its paths with `/boo`.
-
-### Anywhere else (nginx, Kubernetes, S3, …)
-
-Serve `dist/` as static files. Make sure `.ics` is served as `text/calendar`. For nginx, stock `mime.types` doesn't include it, so add:
-
-```nginx
-types { text/calendar ics; }
-```
-
-## Preview card image
-
-`site/assets/og.jpg` is rendered from `site/og.html`. It reads the title and dates from the config.
-Regenerate it after changing them:
-
-```sh
-npm i -D playwright && npx playwright install chromium
-npm run og
-```
-
-iMessage caches previews hard. If you change the image, the build already cache-busts
-the URL, but a message thread that has already unfurled the link keeps the old preview.
+- Built with [Claude Code](https://claude.com/claude-code), from a phone.
+- GIFs via [Tenor](https://tenor.com). Trailer links go to the studios' and distributors' official YouTube uploads.
+- Fonts: Nosifer, Bebas Neue, VT323 and Space Grotesk (Google Fonts, self-hosted).
